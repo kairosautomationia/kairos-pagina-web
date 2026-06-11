@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAIROS AUTOMATION - IA para PyMEs del Ecuador</title>
+    <meta name="description" content="KAIROS es la primera consultora de inteligencia artificial y automatización para PyMEs del Ecuador.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Corner-to-corner tapes -->
+    <div class="corner-tapes animated" aria-hidden="true"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="Documentos/Logo final.png" alt="KAIROS Automation - IA" class="logo-image">
+                <span class="logo-text-brand">Kairos</span>
+            </a>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#caso-exito">Caso de Éxito</a></li>
+                <li><a href="#proceso">Proceso</a></li>
+                <li><a href="https://wa.me/593998730180" class="nav-cta">Agenda tu Diagnóstico</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="container">
+            <div class="hero-main-grid">
+                <div class="hero-text-content">
+                    <div class="hero-badge">
+                        <i class="fas fa-robot"></i>
+                        <span>Hecho a tu medida · Implementado por nosotros</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Deja de apagar incendios a las
+                        <span class="hero-gradient">11 de la noche</span>.
+                        <span class="hero-gradient-cyan">Recupera el control</span>
+                        de tu negocio y vuelve a hacerlo crecer.
+                    </h1>
+                </div>
+
+                <div class="hero-form-container">
+                    <div class="form-card multi-step-card">
+                        <div class="form-progress-container">
+                            <div class="progress-dots">
+                                <span class="dot active"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </div>
+                            <span class="progress-text">Paso 1 de 3</span>
+                        </div>
+
+                        <form class="diagnostico-form" id="multiStepForm">
+                            <!-- Paso 1: Información de la Empresa -->
+                            <div class="form-step active" data-step="1">
+                                <div class="form-header">
+                                    <h3>Cuéntanos de tu negocio</h3>
+                                    <p>Filtro rápido de cualificación</p>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Número de empleados *</label>
+                                        <div class="select-wrapper">
+                                            <select required>
+                                                <option value="" disabled selected>¿Cuántas personas trabajan en tu empresa?</option>
+                                                <option value="1-5">1 a 5 empleados</option>
+                                                <option value="6-20">6 a 20 empleados</option>
+                                                <option value="21-50">21 a 50 empleados</option>
+                                                <option value="51+">Más de 50 empleados</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Área principal a mejorar *</label>
+                                        <div class="select-wrapper">
+                                            <select required>
+                                                <option value="" disabled selected>Selecciona el área más urgente...</option>
+                                                <option value="finanzas">Finanzas y Cobranzas</option>
+                                                <option value="ventas">Ventas y Marketing</option>
+                                                <option value="operaciones">Operaciones y Logística</option>
+                                                <option value="atencion">Atención al Cliente</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-navigation">
+                                    <button type="button" class="btn-next" onclick="changeStep(1)">Siguiente <i class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Paso 2: Diagnóstico del Problema -->
+                            <div class="form-step" data-step="2">
+                                <div class="form-header">
+                                    <h3>¿Cuál es tu mayor problema hoy?</h3>
+                                    <p>Ayúdanos a entender tu desafío (opcional)</p>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group full-width">
+                                        <textarea placeholder="Ej: Pierdo muchos leads por WhatsApp o mi flujo de caja es un caos..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-navigation">
+                                    <button type="button" class="btn-back" onclick="changeStep(-1)">Volver</button>
+                                    <button type="button" class="btn-next" onclick="changeStep(1)">Siguiente <i class="fas fa-arrow-right"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- Paso 3: Datos de Contacto -->
+                            <div class="form-step" data-step="3">
+                                <div class="form-header">
+                                    <h3>Datos de Contacto</h3>
+                                    <p>¿A dónde enviamos tu diagnóstico?</p>
+                                </div>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Nombre completo *</label>
+                                        <input type="text" placeholder="Juan García" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Empresa *</label>
+                                        <input type="text" placeholder="Mi Empresa S.A." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email *</label>
+                                        <input type="email" placeholder="juan@miempresa.com" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>WhatsApp / Teléfono</label>
+                                        <input type="tel" placeholder="+593 99 XXX XXXX">
+                                    </div>
+                                </div>
+                                <div class="form-navigation">
+                                    <button type="button" class="btn-back" onclick="changeStep(-1)">Volver</button>
+                                    <button type="submit" class="btn-form-submit">Solicitar mi Diagnóstico KAIROS →</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <a href="#servicios"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- Servicios -->
+    <section class="services" id="servicios">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Nuestros Servicios</span>
+                <h2 class="section-title">Tres motores para <span class="gradient-text">transformar tu negocio</span></h2>
+                <p class="section-description">
+                    KAIROS opera con tres fuentes de valor que se retroalimentan: implementaciones a medida, 
+                    educación práctica y producto SaaS escalable.
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card featured">
+                    <div class="service-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3 class="service-title">Servicios de Implementación</h3>
+                    <p class="service-desc">Ejecutamos el sistema completo: lo construimos, configuramos, integramos y lo dejamos funcionando. El cliente solo lo opera.</p>
+                    <ul class="service-features">
+                        <li><i class="fas fa-check"></i> Bot WhatsApp con IA</li>
+                        <li><i class="fas fa-check"></i> Automatización de finanzas</li>
+                        <li><i class="fas fa-check"></i> Marketing con agentes IA</li>
+                        <li><i class="fas fa-check"></i> Integración con sistemas existentes</li>
+                    </ul>
+                    <div class="service-price">Desde $200</div>
+                    <a href="#contacto" class="service-cta">Solicitar implementación</a>
+                </div>
+                
+                <div class="service-card under-construction">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="service-title">Educación KAIROS</h3>
+                    <div class="construction-overlay">
+                        <div class="construction-ribbon"><span>En construcción</span></div>
+                    </div>
+                </div>
+
+                <div class="service-card under-construction">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3 class="service-title">KAIROS Business OS</h3>
+                    <div class="construction-overlay">
+                        <div class="construction-ribbon"><span>En construcción</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Caso de Éxito Cake Art -->
+    <section class="case-study" id="caso-exito">
+        <div class="container">
+            <div class="section-header centered">
+                <span class="section-tag">Caso de Éxito</span>
+                <h2 class="section-title">
+                    Deja de operar tu negocio.
+                    <span class="gradient-text">Empieza a hacerlo crecer.</span>
+                </h2>
+                <p class="section-subtitle">
+                    Cake Art recuperó <span class="gradient-text-strong">20+ horas semanales</span>.
+                    El siguiente caso de éxito podrías ser tú.
+                </p>
+            </div>
+
+            <div class="case-full-image">
+                <img src="Documentos/Caso de exito.jpeg" alt="Cake Art - Cliente de KAIROS - Caso de Éxito">
+            </div>
+        </div>
+    </section>
+
+    <!-- Proceso KAIROS -->
+    <section class="process" id="proceso">
+        <div class="container">
+            <div class="section-header centered">
+                <span class="section-tag">Proceso KAIROS</span>
+                <h2 class="section-title">De la idea a la automatización en <span class="gradient-text">5 pasos</span></h2>
+            </div>
+
+            <div class="process-timeline">
+                <div class="process-step">
+                    <div class="step-number">0</div>
+                    <div class="step-content">
+                        <h3>Llamada de Descubrimiento</h3>
+                        <p>10-20 minutos por WhatsApp. Validamos el fit del prospecto con el Scorecard de Calificación.</p>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Diagnóstico KAIROS</h3>
+                        <p>Identificamos 3-5 oportunidades de automatización y entregamos un reporte con el costo en dólares de las fugas detectadas.</p>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Propuesta</h3>
+                        <p>Dos opciones claras: Plan Starter o Plan Completo. Solo elijas cuál te conviene más.</p>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Implementación</h3>
+                        <p>5-7 días para Starter, 2-4 semanas para planes completos. Construimos, configuramos, integramos y capacitamos.</p>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Retainer (Opcional)</h3>
+                        <p>KAIROS se convierte en tu equipo técnico permanente: mantenimiento, mejoras y reporte mensual.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabla de Precios -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header centered">
+                <span class="section-tag">Inversión</span>
+                <h2 class="section-title">Planes diseñados para cada <span class="gradient-text">etapa del negocio</span></h2>
+            </div>
+            
+            <div class="pricing-wrapper">
+                <!-- Fila de Heads: Planes -->
+                <div class="pricing-col pricing-col-plan">
+                    <div class="pricing-plan-head pricing-empty">&nbsp;</div>
+                    <div class="pricing-row pricing-row-label">
+                        <span>Implementación</span>
+                    </div>
+                    <div class="pricing-row pricing-row-label">
+                        <span>Retainer / mes</span>
+                    </div>
+                    <div class="pricing-row pricing-row-label">
+                        <span>Retainer / trimestre</span>
+                    </div>
+                    <div class="pricing-row pricing-row-label pricing-action-head">
+                        <span>Acción</span>
+                    </div>
+                </div>
+
+                <!-- Starter -->
+                <div class="pricing-col pricing-col-card">
+                    <div class="pricing-plan-name">Starter</div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$200</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$1,000</span>
+                    </div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$100</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$250</span>
+                    </div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$300</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$750</span>
+                    </div>
+                    <div class="pricing-row pricing-action">
+                        <a href="#contacto" class="pricing-btn">Empezar</a>
+                    </div>
+                </div>
+
+                <!-- Esencial -->
+                <div class="pricing-col pricing-col-card">
+                    <div class="pricing-plan-name">Esencial</div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$1,000</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$2,000</span>
+                    </div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$350</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$400</span>
+                    </div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$1,050</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$1,200</span>
+                    </div>
+                    <div class="pricing-row pricing-action">
+                        <a href="#contacto" class="pricing-btn">Empezar</a>
+                    </div>
+                </div>
+
+                <!-- PRO (Destacado) -->
+                <div class="pricing-col pricing-col-card pricing-col-pro">
+                    <div class="pricing-plan-name">Pro <span class="tag-popular">Popular</span></div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$2,000</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$3,500</span>
+                    </div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$400</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$700</span>
+                    </div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$1,200</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$2,100</span>
+                    </div>
+                    <div class="pricing-row pricing-action">
+                        <a href="#contacto" class="pricing-btn pricing-btn-pro">Empezar</a>
+                    </div>
+                </div>
+
+                <!-- Scale -->
+                <div class="pricing-col pricing-col-card">
+                    <div class="pricing-plan-name">Scale</div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$3,500</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$5,500</span>
+                    </div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$700</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$1,100</span>
+                    </div>
+                    <div class="pricing-row pricing-row-price">
+                        <span class="price-amount">$2,100</span>
+                        <span class="price-sep">-</span>
+                        <span class="price-amount">$3,300</span>
+                    </div>
+                    <div class="pricing-row pricing-action">
+                        <a href="#contacto" class="pricing-btn">Contactar</a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="pricing-note">Para Quito y Guayaquil se aplica incremento del 15-20% sobre planes Pro y Scale. Pago disponible en 2 o 3 cuotas.</p>
+        </div>
+    </section>
+
+    <!-- Diferenciadores -->
+    <section class="diferenciadores">
+        <div class="container">
+            <div class="section-header centered">
+                <span class="section-tag">¿Por qué KAIROS?</span>
+                <h2 class="section-title">Lo que nos separa del <span class="gradient-text">resto del mercado</span></h2>
+            </div>
+
+            <div class="diferenciadores-grid">
+                <div class="diff-card">
+                    <div class="diff-icon"><i class="fas fa-fingerprint"></i></div>
+                    <h3>Personalización Total</h3>
+                    <p>No vendemos herramientas genéricas. Cada solución ataca los procesos y fugas de dinero específicos de tu negocio.</p>
+                </div>
+
+                <div class="diff-card">
+                    <div class="diff-icon"><i class="fas fa-chart-line"></i></div>
+                    <h3>Eficacia Medible</h3>
+                    <p>No implementamos IA por implementar. Vendemos reducción de costos, ahorro de tiempo y mejora operativa con números.</p>
+                </div>
+
+                <div class="diff-card">
+                    <div class="diff-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <h3>Ecuador-First</h3>
+                    <p>Entendemos el SRI, WhatsApp como canal principal y la mentalidad del empresario ecuatoriano.</p>
+                </div>
+
+                <div class="diff-card">
+                    <div class="diff-icon"><i class="fas fa-handshake"></i></div>
+                    <h3>El Espacio Vacío</h3>
+                    <p>Entre el freelancer a $500 sin proceso y la consultora a $15,000+. KAIROS es la opción profesional accesible.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="final-cta" id="contacto">
+        <div class="container">
+            <div class="cta-box">
+                <h2>¿Listo para recuperar el control de tu negocio?</h2>
+                <p>Agenda tu diagnóstico gratis de 25 minutos. Identificaremos 3-5 oportunidades de automatización con ROI claro.</p>
+                <div class="cta-buttons">
+                    <a href="https://wa.me/593998730180" class="btn btn-primary btn-large" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        Agenda tu Diagnóstico Gratis
+                    </a>
+                </div>
+                <p class="cta-note">Sin compromiso. Solo 10-20 minutos por WhatsApp.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">KAIROS</span>
+                    <span class="footer-subtitle">Automation - IA</span>
+                    <p>Primera consultora de IA y automatización para PyMEs del Ecuador.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Servicios</h4>
+                    <a href="#servicios">Implementación</a>
+                    <a href="#">Business OS</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Recursos</h4>
+                    <a href="#proceso">Proceso</a>
+                    <a href="#caso-exito">Caso de Éxito</a>
+                    <a href="#pricing">Precios</a>
+                </div>
+                <div class="footer-links footer-contacto">
+                    <h4>Contacto</h4>
+                    <div class="contacto-grid">
+                        <a href="https://wa.me/593998730180"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                        <a href="https://www.facebook.com/profile.php?id=61587941937125&locale=es_LA" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+                        <a href="https://www.linkedin.com/company/kairos%E2%94%82automation-ia/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="https://www.tiktok.com/@kairos.automation?is_from_webapp=1&sender_device=pc" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+                        <a href="https://www.instagram.com/kairosautomation.ia?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 KAIROS. Todos los derechos reservados.</p>
+                <p>Ambato, Ecuador</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/593998730180" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>
