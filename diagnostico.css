@@ -4,8 +4,21 @@
    ======================================== */
 
 .diag-body {
+    --color-bg-dark: #090b12;
+    --color-bg-card: #131723;
+    --color-bg-section: #0e111b;
+    --color-morado: #bd8aff;
+    --color-morado-claro: #cfb0ff;
+    --color-cian: #78eedc;
+    --color-cian-claro: #a0f5e7;
+    --color-text-secondary: #9da5b6;
+    --color-text-muted: #737e91;
+    --gradient-main: linear-gradient(120deg, #94e9da, #9bacff);
+    font-family: var(--sans);
     background: var(--color-bg-dark);
 }
+
+.diag-body .navbar { height: 76px; }
 
 /* --- Navbar simplificada --- */
 .diag-navbar {
@@ -23,6 +36,9 @@
     position: static;
     left: auto;
 }
+
+.diag-nav-container .logo-mark { position: relative; left: auto; top: auto; }
+.diag-nav-container .logo-wordmark { font: 800 17px/1 var(--display); letter-spacing: .09em; }
 
 .diag-back-link {
     display: flex;
