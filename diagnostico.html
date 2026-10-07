@@ -5,22 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Diagnóstico IA en 21 preguntas | KAIROS</title>
 <meta name="description" content="Evalúa en 21 preguntas las doce dimensiones que determinan qué tan lista está tu empresa para IA: estrategia, datos, casos de uso, procesos, talento, gobierno y más.">
+<meta name="theme-color" content="#0a0a0b">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="diagnostico.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="diag-body">
 
-<nav class="navbar diag-navbar">
+<header class="navbar diag-navbar">
     <div class="nav-container diag-nav-container">
-        <a href="index.html" class="nav-logo">
-            <img src="Documentos/fondo definitivo.png" alt="KAIROS Automation - IA" class="logo-image">
-            <span class="logo-text-brand">Kairos</span>
+        <a href="index.html" class="nav-logo" aria-label="KAIROS, volver al inicio">
+            <img src="Documentos/fondo definitivo.png" alt="" class="logo-image" width="40" height="34">
+            <span class="logo-text-brand">KAIROS</span>
         </a>
         <a href="index.html" class="diag-back-link"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
     </div>
-</nav>
+</header>
 
 <main class="container diag-main" id="quiz">
 
@@ -45,8 +49,8 @@
     <!-- RESULTADOS -->
     <section class="diag-results" id="results" hidden>
         <div class="diag-results-head">
-            <span class="section-tag"><i class="fas fa-clipboard-check"></i> Resultado</span>
-            <h2 class="section-title">Tu diagnóstico de madurez para <span class="gradient-text">IA</span></h2>
+            <p class="section-tag">RESULTADO · DIAGNÓSTICO KAIROS</p>
+            <h2 class="section-title">Tu diagnóstico de madurez para <span class="accent">IA</span></h2>
             <p class="diag-results-context" id="resultsContext"></p>
         </div>
 

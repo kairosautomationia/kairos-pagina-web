@@ -5,124 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KAIROS Lab de IA</title>
     <meta name="description" content="KAIROS es un lab de IA que convierte problemas en soluciones para empresas.">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#0a0a0b">
+    <script>document.documentElement.classList.add('js');</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Corner-to-corner tapes -->
-    <div class="corner-tapes animated" aria-hidden="true"></div>
+    <a class="skip-link" href="#inicio">Saltar al contenido</a>
 
     <!-- Navbar -->
-    <nav class="navbar" id="navbar">
+    <header class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <img src="Documentos/fondo definitivo.png" alt="KAIROS Automation - IA" class="logo-image">
-                <span class="logo-text-brand">Kairos</span>
+            <a href="#inicio" class="nav-logo" aria-label="KAIROS, inicio">
+                <img src="Documentos/fondo definitivo.png" alt="" class="logo-image" width="40" height="34">
+                <span class="logo-text-brand">KAIROS</span>
             </a>
-            <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">
+                <span></span><span></span><span></span>
             </button>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#nosotros">Nosotros</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#caso-exito">Caso de Éxito</a></li>
-                <li><a href="#proceso">Proceso</a></li>
-                <li><a href="https://cal.com/kairos-buppna/kairos-lab-de-ia" class="nav-cta" target="_blank" rel="noopener">Agendar cita</a></li>
-            </ul>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#caso-exito">Caso de éxito</a></li>
+                    <li><a href="#proceso">Proceso</a></li>
+                    <li class="nav-cta-item"><a href="https://cal.com/kairos-buppna/kairos-lab-de-ia" class="btn btn-light btn-sm" target="_blank" rel="noopener">Agendar cita <i class="fas fa-arrow-right"></i></a></li>
+                </ul>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <!-- Hero Section -->
+    <main>
+    <!-- Hero -->
     <section class="hero" id="inicio">
-        <div class="hero-bg"></div>
-        <div class="hero-particles" id="particles"></div>
-        <div class="container">
-            <div class="hero-main-grid">
-                <div class="hero-text-content">
-                    <div class="hero-badge">
-                        <i class="fas fa-robot"></i>
-                        <span>Hecho a tu medida · Implementado por nosotros</span>
-                    </div>
-                    <h1 class="hero-title">
-                        Deja de apagar incendios a las
-                        <span class="hero-gradient">11 de la noche</span>.
-                        <span class="hero-gradient-cyan">Recupera el control</span>
-                        de tu negocio y vuelve a hacerlo crecer.
-                    </h1>
-                    <p class="hero-subtitle">Del diagnóstico a la solución: IA que transforma problemas en soluciones.</p>
-                </div>
-
-                <div class="hero-form-container">
-                    <div class="form-card hero-cta-card">
-                        <div class="hero-cta-icon">
-                            <i class="fas fa-stethoscope"></i>
-                        </div>
-                        <h3>Diagnóstico KAIROS</h3>
-                        <p>15 minutos, sin compromiso. Identificamos 3-5 oportunidades de automatización para tu negocio.</p>
-                        <a href="diagnostico.html" class="btn btn-primary btn-large hero-cta-btn">
-                            Empieza tu diagnóstico <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
+        <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+        <div class="hero-grid-bg" aria-hidden="true"></div>
+        <div class="container hero-inner">
+            <div class="hero-text">
+                <p class="status-line"><span class="pulse-dot" aria-hidden="true"></span> LAB DE IA · HECHO A TU MEDIDA · ECUADOR</p>
+                <h1 class="hero-title">
+                    <span class="line"><span>Deja de apagar incendios a las</span></span>
+                    <span class="line"><span class="accent">11 de la noche.</span></span>
+                    <span class="line dim"><span>Recupera el control de tu negocio</span></span>
+                    <span class="line dim"><span>y vuelve a hacerlo crecer.</span></span>
+                </h1>
+                <p class="hero-subtitle">Del diagnóstico a la solución: IA que transforma problemas en soluciones, implementada por nosotros.</p>
+                <div class="hero-actions">
+                    <a href="diagnostico.html" class="btn btn-light btn-large">Empieza tu diagnóstico <i class="fas fa-arrow-right"></i></a>
+                    <a href="#servicios" class="btn btn-ghost btn-large">Ver servicios</a>
                 </div>
             </div>
+
+            <aside class="diag-card" aria-label="Diagnóstico KAIROS">
+                <p class="mono-label">DIAGNÓSTICO KAIROS</p>
+                <h2>15 minutos, sin compromiso.</h2>
+                <p>Identificamos 3-5 oportunidades de automatización para tu negocio.</p>
+                <ul class="diag-card-list">
+                    <li><i class="fas fa-check"></i> Mapeamos tus procesos</li>
+                    <li><i class="fas fa-check"></i> Medimos dónde se pierde el tiempo</li>
+                    <li><i class="fas fa-check"></i> Priorizamos qué automatizar primero</li>
+                </ul>
+                <a href="diagnostico.html" class="btn btn-primary btn-block">Empezar ahora <i class="fas fa-arrow-right"></i></a>
+            </aside>
         </div>
-        <div class="hero-scroll">
-            <a href="#servicios"><i class="fas fa-chevron-down"></i></a>
+
+        <div class="container">
+            <dl class="metrics">
+                <div><dt>20+ h</dt><dd>SEMANALES RECUPERADAS · CAKE ART</dd></div>
+                <div><dt>15 min</dt><dd>DIAGNÓSTICO INICIAL</dd></div>
+                <div><dt>3 pasos</dt><dd>DEL PROBLEMA A LA SOLUCIÓN</dd></div>
+                <div><dt>1 contrato</dt><dd>DISEÑO · IA · IMPLEMENTACIÓN</dd></div>
+            </dl>
+        </div>
+
+        <div class="ticker" aria-hidden="true">
+            <div class="ticker-track">
+                <span>BOT WHATSAPP CON IA</span><span>AUTOMATIZACIÓN DE FINANZAS</span><span>MARKETING CON AGENTES IA</span><span>INTEGRACIÓN CON SISTEMAS EXISTENTES</span><span>DIAGNÓSTICO DE PROCESOS</span><span>DESARROLLO A MEDIDA</span>
+                <span>BOT WHATSAPP CON IA</span><span>AUTOMATIZACIÓN DE FINANZAS</span><span>MARKETING CON AGENTES IA</span><span>INTEGRACIÓN CON SISTEMAS EXISTENTES</span><span>DIAGNÓSTICO DE PROCESOS</span><span>DESARROLLO A MEDIDA</span>
+            </div>
         </div>
     </section>
 
-    <!-- Quiénes Somos -->
-    <section class="about" id="nosotros">
+    <!-- 01 Quiénes somos -->
+    <section class="section about" id="nosotros">
         <div class="container">
+            <p class="section-tag reveal">01 / QUIÉNES SOMOS</p>
+            <h2 class="section-title reveal">Un lab de IA que convierte<br><span class="dim">problemas en soluciones.</span></h2>
             <div class="about-grid">
-                <div class="about-text">
-                    <div class="section-header">
-                        <span class="section-tag">Quiénes Somos</span>
-                        <h2 class="section-title">Un lab de IA que convierte <span class="gradient-text">problemas en soluciones</span>.</h2>
-                        <p class="section-description">
-                            En KAIROS ayudamos a empresas a identificar, sistematizar y resolver procesos que
-                            consumen tiempo, generan errores o limitan su crecimiento, mediante inteligencia
-                            artificial y automatización.
-                        </p>
-                    </div>
-                    <p class="about-highlight-line">
-                        <span class="highlight-cian">Procesos más eficientes.</span>
-                        <span class="highlight-morado">Empresas más competitivas.</span>
+                <div class="reveal">
+                    <p class="lead">
+                        En KAIROS ayudamos a empresas a identificar, sistematizar y resolver procesos que
+                        consumen tiempo, generan errores o limitan su crecimiento, mediante inteligencia
+                        artificial y automatización.
+                    </p>
+                    <p class="about-highlight">
+                        <span>Procesos más eficientes.</span>
+                        <span class="dim">Empresas más competitivas.</span>
                     </p>
                 </div>
-                <div class="about-quote-card">
-                    <span class="about-quote-tag">Nuestro Enfoque</span>
-                    <p class="about-quote-text">
-                        No empezamos por la tecnología.
-                        <span class="gradient-text">Empezamos por el problema.</span>
-                    </p>
+                <div class="compare reveal">
+                    <div class="compare-col">
+                        <p class="mono-label muted">NO EMPEZAMOS POR</p>
+                        <p class="compare-text strike">la tecnología</p>
+                    </div>
+                    <div class="compare-col yes">
+                        <p class="mono-label accent">EMPEZAMOS POR</p>
+                        <p class="compare-text">el <span class="accent">problema</span>.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Servicios -->
-    <section class="services" id="servicios">
+    <!-- 02 Servicios -->
+    <section class="section services" id="servicios">
         <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Nuestros Servicios</span>
-                <h2 class="section-title">Tres motores para <span class="gradient-text">transformar tu negocio</span></h2>
-                <p class="section-description">
-                    Todo empieza con un diagnóstico. A partir de ahí, te llevamos por el camino que mejor resuelve
-                    tu problema: una implementación a medida o una de nuestras aplicaciones propias.
-                </p>
-            </div>
-            
+            <p class="section-tag reveal">02 / SERVICIOS</p>
+            <h2 class="section-title reveal">Tres motores para<br><span class="dim">transformar tu negocio.</span></h2>
+            <p class="section-description reveal">
+                Todo empieza con un diagnóstico. A partir de ahí, te llevamos por el camino que mejor resuelve
+                tu problema: una implementación a medida o una de nuestras aplicaciones propias.
+            </p>
+
             <div class="services-grid">
-                <div class="service-card featured">
-                    <div class="service-icon">
-                        <i class="fas fa-cog"></i>
+                <article class="service-card featured reveal">
+                    <div class="service-top">
+                        <span class="service-idx">01 / 03</span>
+                        <span class="service-icon"><i class="fas fa-cog"></i></span>
                     </div>
+                    <div class="service-metric"><strong>A medida</strong><span>IMPLEMENTACIÓN</span></div>
                     <h3 class="service-title">KAIROS Solution</h3>
                     <p class="service-desc">Es la capa de diagnóstico e implementación: tu punto de entrada. Recibimos tu negocio, identificamos el problema real y decidimos si la solución correcta es una aplicación propia ya lista o un desarrollo a medida. Lo construimos, integramos y lo dejamos funcionando; tú solo lo operas.</p>
                     <ul class="service-features">
@@ -131,145 +146,101 @@
                         <li><i class="fas fa-check"></i> Marketing con agentes IA</li>
                         <li><i class="fas fa-check"></i> Integración con sistemas existentes</li>
                     </ul>
-                    <a href="#contacto" class="service-cta">Solicitar mi cita</a>
-                </div>
-                
-                <div class="service-card premium-soon-card">
-                    <div class="card-soon-inner">
-                        <div class="card-soon-header">
-                            <div class="service-icon">
-                                <i class="fas fa-layer-group"></i>
-                            </div>
-                            <h3 class="service-title">KÁMIRA</h3>
-                            <div class="soon-body">
-                                <p class="soon-desc">
-                                    Una de nuestras aplicaciones propias, disponible bajo suscripción mensual.
-                                    Nace de los problemas reales que más se repiten en los diagnósticos que hacemos
-                                    a PyMEs del Ecuador, lista para usar sin desarrollo a medida.
-                                </p>
-                                <div class="soon-cta-blur">
-                                    <span class="cta-blur-text">Próximamente</span>
-                                </div>
-                                <div class="soon-footer-blur">
-                                    <i class="far fa-clock"></i>
-                                    <span>Estamos trabajando para ofrecerte lo mejor.</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="construction-tape" aria-hidden="true">
-                            <div class="tape-band">
-                                <span class="tape-text">EN CONSTRUCCIÓN</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <a href="#contacto" class="service-cta">SOLICITAR MI CITA <i class="fas fa-arrow-right"></i></a>
+                </article>
 
-                <div class="service-card premium-soon-card">
-                    <div class="card-soon-inner">
-                        <div class="card-soon-header">
-                            <div class="service-icon">
-                                <i class="fas fa-laptop-code"></i>
-                            </div>
-                            <h3 class="service-title">IONDU</h3>
-                            <div class="soon-body">
-                                <p class="soon-desc">
-                                    Nuestra segunda aplicación propia, también por suscripción. Igual que KÁMIRA,
-                                    se mantiene y mejora de forma continua para que tu negocio no dependa de
-                                    un desarrollo cerrado que se queda obsoleto.
-                                </p>
-                                <div class="soon-cta-blur">
-                                    <span class="cta-blur-text">Próximamente</span>
-                                </div>
-                                <div class="soon-footer-blur">
-                                    <i class="far fa-clock"></i>
-                                    <span>Estamos trabajando para ofrecerte lo mejor.</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="construction-tape" aria-hidden="true">
-                            <div class="tape-band">
-                                <span class="tape-text">EN CONSTRUCCIÓN</span>
-                            </div>
-                        </div>
+                <article class="service-card soon reveal">
+                    <div class="service-top">
+                        <span class="service-idx">02 / 03</span>
+                        <span class="service-icon"><i class="fas fa-layer-group"></i></span>
                     </div>
-                </div>
+                    <div class="service-metric"><strong>Suscripción</strong><span>APP PROPIA</span></div>
+                    <h3 class="service-title">KÁMIRA</h3>
+                    <p class="service-desc">Una de nuestras aplicaciones propias, disponible bajo suscripción mensual. Nace de los problemas reales que más se repiten en los diagnósticos que hacemos a PyMEs del Ecuador, lista para usar sin desarrollo a medida.</p>
+                    <p class="soon-tag"><span class="pulse-dot" aria-hidden="true"></span> PRÓXIMAMENTE · EN CONSTRUCCIÓN</p>
+                </article>
+
+                <article class="service-card soon reveal">
+                    <div class="service-top">
+                        <span class="service-idx">03 / 03</span>
+                        <span class="service-icon"><i class="fas fa-laptop-code"></i></span>
+                    </div>
+                    <div class="service-metric"><strong>Suscripción</strong><span>APP PROPIA</span></div>
+                    <h3 class="service-title">IONDU</h3>
+                    <p class="service-desc">Nuestra segunda aplicación propia, también por suscripción. Igual que KÁMIRA, se mantiene y mejora de forma continua para que tu negocio no dependa de un desarrollo cerrado que se queda obsoleto.</p>
+                    <p class="soon-tag"><span class="pulse-dot" aria-hidden="true"></span> PRÓXIMAMENTE · EN CONSTRUCCIÓN</p>
+                </article>
             </div>
         </div>
     </section>
 
-    <!-- Caso de Éxito Cake Art -->
-    <section class="case-study" id="caso-exito">
+    <!-- 03 Caso de éxito -->
+    <section class="section case-study" id="caso-exito">
         <div class="container">
-            <div class="section-header centered">
-                <span class="section-tag">Caso de Éxito</span>
-                <h2 class="section-title">
-                    Deja de operar tu negocio.
-                    <span class="gradient-text">Empieza a hacerlo crecer.</span>
-                </h2>
-                <p class="section-subtitle">
-                    Cake Art recuperó <span class="gradient-text-strong">20+ horas semanales</span>.
-                    El siguiente caso de éxito podrías ser tú.
-                </p>
-            </div>
-
-            <div class="case-full-image">
-                <img src="Documentos/Caso de exito.jpeg" alt="Cake Art - Cliente de KAIROS - Caso de Éxito">
-            </div>
+            <p class="section-tag reveal">03 / CASO DE ÉXITO</p>
+            <h2 class="section-title reveal">Deja de operar tu negocio.<br><span class="dim">Empieza a hacerlo crecer.</span></h2>
+            <p class="section-description reveal">
+                Cake Art recuperó <strong class="accent">20+ horas semanales</strong>.
+                El siguiente caso de éxito podrías ser tú.
+            </p>
+            <figure class="case-frame reveal">
+                <img src="Documentos/Caso de exito.jpeg" alt="Cake Art, cliente de KAIROS: caso de éxito con página web y automatización de finanzas y marketing" width="1600" height="807" loading="lazy">
+            </figure>
         </div>
     </section>
 
-    <!-- Proceso KAIROS -->
-    <section class="process" id="proceso">
+    <!-- 04 Proceso -->
+    <section class="section process" id="proceso">
         <div class="container">
-            <div class="section-header centered">
-                <span class="section-tag">Proceso KAIROS</span>
-                <h2 class="section-title">Del diagnóstico a la solución en <span class="gradient-text">3 pasos</span></h2>
-            </div>
+            <p class="section-tag reveal">04 / PROCESO</p>
+            <h2 class="section-title reveal">Del diagnóstico a la solución<br><span class="dim">en 3 pasos.</span></h2>
 
-            <div class="process-timeline">
-                <div class="process-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Analizamos tu empresa</h3>
-                        <p>Entendemos tus procesos, identificamos cuellos de botella y oportunidades de mejora.</p>
-                    </div>
+            <div class="process-timeline" id="process-timeline">
+                <div class="rail" aria-hidden="true"><div class="rail-fill" id="rail-fill"></div></div>
+
+                <div class="process-step reveal">
+                    <span class="step-dot" aria-hidden="true"></span>
+                    <span class="step-bignum" aria-hidden="true">01</span>
+                    <p class="mono-label accent">PASO 01 · DIAGNÓSTICO</p>
+                    <h3>Analizamos tu empresa</h3>
+                    <p>Entendemos tus procesos, identificamos cuellos de botella y oportunidades de mejora.</p>
                 </div>
 
-                <div class="process-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Definimos la solución ideal</h3>
-                        <p>Determinamos si encaja con una de nuestras aplicaciones o si requiere una solución a medida para tu empresa.</p>
-                    </div>
+                <div class="process-step reveal">
+                    <span class="step-dot" aria-hidden="true"></span>
+                    <span class="step-bignum" aria-hidden="true">02</span>
+                    <p class="mono-label accent">PASO 02 · DISEÑO</p>
+                    <h3>Definimos la solución ideal</h3>
+                    <p>Determinamos si encaja con una de nuestras aplicaciones o si requiere una solución a medida para tu empresa.</p>
                 </div>
 
-                <div class="process-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Te ayudamos a sistematizar</h3>
-                        <p>Implementamos la solución en tu empresa para que sea parte real de tu operación y genere resultados medibles.</p>
-                    </div>
+                <div class="process-step reveal">
+                    <span class="step-dot" aria-hidden="true"></span>
+                    <span class="step-bignum" aria-hidden="true">03</span>
+                    <p class="mono-label accent">PASO 03 · IMPLEMENTACIÓN</p>
+                    <h3>Te ayudamos a sistematizar</h3>
+                    <p>Implementamos la solución en tu empresa para que sea parte real de tu operación y genere resultados medibles.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Final -->
-    <section class="final-cta" id="contacto">
+    <!-- 05 Contacto -->
+    <section class="section final-cta" id="contacto">
         <div class="container">
-            <div class="cta-box">
-                <h2>¿Listo para recuperar el control de tu negocio?</h2>
-                <p>Reserva tu cita de 45-60 minutos. Identificaremos la fuga de tu tiempo operativo que le está costando a tu empresa.</p>
-                <div class="cta-buttons">
-                    <a href="https://cal.com/kairos-buppna/kairos-lab-de-ia" class="btn btn-primary btn-large" target="_blank" rel="noopener">
-                        <i class="fas fa-calendar-check"></i>
-                        Reservar mi cita
-                    </a>
-                </div>
-                <p class="cta-note">Sin compromiso. Reunión de 45-60 minutos, agenda en línea.</p>
+            <p class="section-tag reveal">05 / CONTACTO</p>
+            <h2 class="section-title reveal">¿Listo para recuperar<br><span class="dim">el control de tu negocio?</span></h2>
+            <p class="section-description reveal">Reserva tu cita de 45-60 minutos. Identificaremos la fuga de tu tiempo operativo que le está costando a tu empresa.</p>
+            <div class="cta-buttons reveal">
+                <a href="https://cal.com/kairos-buppna/kairos-lab-de-ia" class="btn btn-light btn-large" target="_blank" rel="noopener">
+                    <i class="fas fa-calendar-check"></i> Reservar mi cita
+                </a>
+                <a href="diagnostico.html" class="btn btn-ghost btn-large">Hacer el diagnóstico</a>
             </div>
+            <p class="cta-note">SIN COMPROMISO · REUNIÓN DE 45-60 MIN · AGENDA EN LÍNEA</p>
         </div>
     </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -277,7 +248,7 @@
             <div class="footer-content">
                 <div class="footer-brand">
                     <span class="footer-logo">KAIROS</span>
-                    <span class="footer-subtitle">Lab de IA</span>
+                    <span class="footer-subtitle">LAB DE IA</span>
                     <p>Un lab de IA que convierte problemas en soluciones.</p>
                 </div>
                 <div class="footer-links">
@@ -289,16 +260,17 @@
                 <div class="footer-links">
                     <h4>Recursos</h4>
                     <a href="#proceso">Proceso</a>
-                    <a href="#caso-exito">Caso de Éxito</a>
+                    <a href="#caso-exito">Caso de éxito</a>
+                    <a href="diagnostico.html">Diagnóstico</a>
                 </div>
                 <div class="footer-links footer-contacto">
                     <h4>Contacto</h4>
                     <div class="contacto-grid">
                         <a href="https://wa.me/593998730180"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="https://www.facebook.com/profile.php?id=61587941937125&locale=es_LA" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
-                        <a href="https://www.linkedin.com/company/kairos%E2%94%82automation-ia/posts/?feedView=all" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                        <a href="https://www.tiktok.com/@kairos.ia.lab?is_from_webapp=1&sender_device=pc" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
-                        <a href="https://www.instagram.com/kairos.automation.lab?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                        <a href="https://www.facebook.com/profile.php?id=61587941937125&locale=es_LA" target="_blank" rel="noopener"><i class="fab fa-facebook"></i> Facebook</a>
+                        <a href="https://www.linkedin.com/company/kairos%E2%94%82automation-ia/posts/?feedView=all" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="https://www.tiktok.com/@kairos.ia.lab?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i> TikTok</a>
+                        <a href="https://www.instagram.com/kairos.automation.lab?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener"><i class="fab fa-instagram"></i> Instagram</a>
                         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=kairosautomation.ia@gmail.com" target="_blank" rel="noopener"><i class="fab fa-google"></i> Gmail</a>
                     </div>
                 </div>
@@ -310,8 +282,7 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/593998730180" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+    <a href="https://wa.me/593998730180" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chatear por WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
