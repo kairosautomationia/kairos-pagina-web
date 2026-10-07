@@ -260,17 +260,20 @@ button { font: inherit; color: inherit; }
 .service-card.soon .service-icon { border-color: var(--border-strong); background: transparent; color: var(--color-text-secondary); }
 .service-card.soon .service-metric strong { color: var(--color-text-secondary); font-size: 1.6rem; }
 .service-kind { margin-top: 2.25rem; color: var(--accent); }
+.service-card.soon { position: relative; overflow: hidden; min-height: 280px; }
+.service-card.soon .service-top { flex-direction: row-reverse; justify-content: flex-end; gap: 1rem; }
 .service-card.soon .service-title { margin-top: .6rem; }
-.service-card.soon .service-desc { margin-bottom: 2rem; }
-/* Cinta de construcción de punta a punta de la tarjeta */
+/* Cinta de construcción en diagonal, de esquina a esquina de la tarjeta (ángulo y largo los fija script.js) */
 .construction-tape {
-    margin: auto -2rem -2rem; overflow: hidden;
-    border-top: 1px solid var(--accent-line);
+    position: absolute; left: 50%; top: 50%; z-index: 2;
+    width: var(--tape-len, 150%);
+    transform: translate(-50%, -50%) rotate(var(--tape-angle, -50deg));
+    overflow: hidden; pointer-events: none;
     background: repeating-linear-gradient(-45deg, var(--accent) 0 12px, #0a0a0b 12px 24px);
     padding: 6px 0;
 }
 .tape-track { display: flex; width: max-content; background: #0a0a0b; animation: kairos-ticker 24s linear infinite; }
-.tape-track span { padding: .7rem 1.25rem; font-family: var(--font-mono); font-size: .72rem; font-weight: 600; letter-spacing: .2em; color: var(--accent); white-space: nowrap; }
+.tape-track span { padding: .75rem 1.25rem; font-family: var(--font-mono); font-size: .76rem; font-weight: 600; letter-spacing: .2em; color: var(--accent); white-space: nowrap; }
 .tape-track span::after { content: '◆'; margin-left: 2.5rem; font-size: .55rem; color: var(--color-text-muted); }
 
 /* --- 03 Caso de éxito --- */

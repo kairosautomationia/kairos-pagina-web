@@ -76,6 +76,22 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', onScroll);
     onScroll();
 
+    // --- Cinta diagonal de esquina a esquina en las tarjetas "en construcción" ---
+    var tapes = document.querySelectorAll('.service-card.soon');
+    function fitTapes() {
+        tapes.forEach(function (card) {
+            var tape = card.querySelector('.construction-tape');
+            if (!tape) return;
+            var w = card.clientWidth, h = card.clientHeight;
+            tape.style.setProperty('--tape-len', Math.ceil(Math.hypot(w, h) + 60) + 'px');
+            tape.style.setProperty('--tape-angle', (-Math.atan2(h, w) * 180 / Math.PI).toFixed(2) + 'deg');
+        });
+    }
+    fitTapes();
+    window.addEventListener('resize', fitTapes);
+    window.addEventListener('load', fitTapes);
+    if ('ResizeObserver' in window) tapes.forEach(function (c) { new ResizeObserver(fitTapes).observe(c); });
+
     // --- Hero: red de nodos en canvas ---
     var canvas = document.getElementById('hero-canvas');
     if (canvas && !reduceMotion) {
