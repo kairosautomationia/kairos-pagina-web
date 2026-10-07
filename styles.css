@@ -200,6 +200,8 @@ button { font: inherit; color: inherit; }
 .js .hero-title .line:nth-child(4) > span { animation-delay: .36s; }
 @keyframes kairos-line { to { transform: translateY(0); opacity: 1; } }
 
+.hero-pillars { margin-top: 1.75rem; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 0; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: var(--color-text-secondary); }
+.hero-pillars span + span::before { content: '·'; margin: 0 1rem; color: var(--accent); }
 .hero-subtitle { margin-top: 1.75rem; max-width: 52ch; color: var(--color-text-secondary); font-size: 1.15rem; }
 .hero-actions { margin-top: 2.25rem; display: flex; flex-wrap: wrap; gap: .85rem; }
 
