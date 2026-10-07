@@ -2,6 +2,6 @@
   "name": "kairos-pagina-web",
   "compatibility_date": "2026-10-05",
   "assets": {
-    "directory": "./dist"
+    "directory": "./"
   }
 }

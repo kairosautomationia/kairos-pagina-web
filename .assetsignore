@@ -1,0 +1,16 @@
+.git
+.github
+.gitignore
+.assetsignore
+node_modules
+scripts
+dist
+package.json
+package-lock.json
+wrangler.jsonc
+README.md
+Documentos/*.docx
+Documentos/*.pdf
+Documentos/desktop.ini
+.claude
+.wrangler
