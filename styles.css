@@ -76,7 +76,7 @@ button { font: inherit; color: inherit; }
 /* --- Utilidades tipográficas --- */
 .accent { color: var(--accent); }
 .dim { color: var(--color-text-muted); }
-.mono-label, .section-tag, .status-line, .service-idx, .cta-note, .soon-tag {
+.mono-label, .section-tag, .status-line, .service-idx, .cta-note, .service-kind {
     font-family: var(--font-mono);
     font-size: .72rem;
     font-weight: 500;
@@ -240,8 +240,8 @@ button { font: inherit; color: inherit; }
 .compare-text.strike { color: var(--color-text-muted); text-decoration: line-through; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
 
 /* --- 02 Servicios --- */
-.services-grid { margin-top: 3.5rem; display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-.service-card { background: var(--color-bg-dark); padding: 2rem; display: flex; flex-direction: column; transition: background var(--transition); }
+.services-grid { margin-top: 3.5rem; display: grid; grid-template-columns: minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.service-card { min-width: 0; background: var(--color-bg-dark); padding: 2rem; display: flex; flex-direction: column; transition: background var(--transition); }
 .service-card:hover { background: var(--color-bg-card-hover); }
 .service-top { display: flex; justify-content: space-between; align-items: center; }
 .service-idx { color: var(--color-text-muted); }
@@ -259,7 +259,19 @@ button { font: inherit; color: inherit; }
 .service-cta:hover i { transform: translateX(5px); }
 .service-card.soon .service-icon { border-color: var(--border-strong); background: transparent; color: var(--color-text-secondary); }
 .service-card.soon .service-metric strong { color: var(--color-text-secondary); font-size: 1.6rem; }
-.soon-tag { margin-top: auto; padding-top: 1.75rem; display: inline-flex; align-items: center; gap: .6rem; color: var(--accent); }
+.service-kind { margin-top: 2.25rem; color: var(--accent); }
+.service-card.soon .service-title { margin-top: .6rem; }
+.service-card.soon .service-desc { margin-bottom: 2rem; }
+/* Cinta de construcción de punta a punta de la tarjeta */
+.construction-tape {
+    margin: auto -2rem -2rem; overflow: hidden;
+    border-top: 1px solid var(--accent-line);
+    background: repeating-linear-gradient(-45deg, var(--accent) 0 12px, #0a0a0b 12px 24px);
+    padding: 6px 0;
+}
+.tape-track { display: flex; width: max-content; background: #0a0a0b; animation: kairos-ticker 24s linear infinite; }
+.tape-track span { padding: .7rem 1.25rem; font-family: var(--font-mono); font-size: .72rem; font-weight: 600; letter-spacing: .2em; color: var(--accent); white-space: nowrap; }
+.tape-track span::after { content: '◆'; margin-left: 2.5rem; font-size: .55rem; color: var(--color-text-muted); }
 
 /* --- 03 Caso de éxito --- */
 .case-frame { margin-top: 3.5rem; border: 1px solid var(--border-strong); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-bg-card); }
@@ -347,7 +359,7 @@ button { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
-    .ticker-track { animation: none; }
+    .ticker-track, .tape-track { animation: none; }
     .js .reveal { opacity: 1; transform: none; }
     .js .hero-title .line > span { transform: none; opacity: 1; }
 }
