@@ -170,3 +170,48 @@
     background-size: 14px 14px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2322d3ee' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
+
+/* ===== Móvil: estructura del cuestionario ===== */
+.diag-question-dims + br { display: none; }
+
+@media (max-width: 560px) {
+    .diag-main { padding-top: calc(var(--nav-h) + 1.25rem); padding-bottom: 2rem; min-height: 0; }
+    .diag-back-link { letter-spacing: .04em; font-size: .68rem; gap: .45rem; }
+    .diag-progress-wrap { gap: .85rem; margin-bottom: 1.1rem; }
+    .diag-progress-text { font-size: .66rem; letter-spacing: .08em; }
+
+    .diag-step-card { padding: 1.25rem; }
+    .diag-step-intro { gap: .85rem; margin-bottom: 1.25rem; padding-bottom: 1.25rem; }
+    .diag-section-icon { width: 40px; height: 40px; }
+    .diag-step-intro h2 { font-size: 1.3rem; }
+    .diag-step-intro p { font-size: .9rem; }
+    .diag-step-chip { margin-bottom: .6rem; }
+    .diag-question-text-step { margin: .5rem 0 1.1rem; font-size: 1.15rem; line-height: 1.35; }
+
+    .diag-options { gap: .5rem; }
+    .diag-option label { padding: .7rem .9rem; gap: .85rem; }
+    .diag-opt-num { width: 30px; height: 30px; flex: none; }
+    .diag-opt-label { font-size: .88rem; }
+    .diag-choice-option label { padding: .8rem .9rem; min-height: 48px; font-size: .92rem; }
+    .diag-textarea { min-height: 120px; }
+
+    /* Botones Atrás / Siguiente siempre a mano, pegados abajo */
+    .diag-nav-buttons {
+        position: sticky; bottom: 0; z-index: 20;
+        margin: 1rem -1.1rem 0; padding: .75rem 1.1rem calc(.75rem + env(safe-area-inset-bottom));
+        background: var(--color-bg-dark); border-top: 1px solid var(--border);
+    }
+
+    /* Resultados */
+    .diag-global-score { padding: 1.25rem; gap: 1.25rem; }
+    .diag-global-ring { width: 128px; height: 128px; }
+    .diag-global-number { font-size: 2.3rem; }
+    .diag-global-level { font-size: 1.4rem; }
+    .diag-results-subtitle { font-size: 1.15rem; margin-top: 2rem; }
+    .diag-foundations-list li, .diag-usecases-list li { padding: 1rem; font-size: .92rem; }
+    .diag-usecases-list li { padding-left: 2.9rem; }
+    .diag-usecases-list li::before { left: 1rem; top: 1rem; }
+    .diag-cta-box { padding: 1.5rem 1.25rem; margin-top: 2rem; }
+    .diag-cta-buttons .btn, .diag-cta-step2 .btn { width: 100%; }
+    .diag-restart { margin-top: 1.5rem; }
+}
