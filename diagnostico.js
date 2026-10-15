@@ -770,7 +770,7 @@
 
         var ring = document.getElementById('globalRing');
         ring.style.background =
-            'conic-gradient(var(--color-cian) 0deg, var(--color-morado) ' + (total * 3.6) + 'deg, rgba(255,255,255,0.08) ' + (total * 3.6) + 'deg)';
+            'conic-gradient(var(--color-cian) 0deg, var(--color-morado) ' + (total * 3.6) + 'deg, rgba(12,18,34,0.12) ' + (total * 3.6) + 'deg)';
         document.getElementById('globalNumber').textContent = Math.round(total);
         document.getElementById('globalLevel').textContent = totalLevel.label;
         document.getElementById('globalDesc').textContent = totalLevel.desc;
