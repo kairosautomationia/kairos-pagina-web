@@ -144,3 +144,10 @@
     .diag-global-score { flex-direction: column; text-align: center; }
     .diag-nav-buttons .btn { flex: 1; }
 }
+
+/* Separación entre la etiqueta de sección y "Dimensión: ..." */
+.diag-step-chip { vertical-align: middle; }
+.diag-step-chip + .diag-question-dims { display: inline-block; margin-left: 1rem; margin-bottom: 1.25rem; vertical-align: middle; }
+@media (max-width: 560px) {
+    .diag-step-chip + .diag-question-dims { display: block; margin: -.5rem 0 1.25rem; }
+}
