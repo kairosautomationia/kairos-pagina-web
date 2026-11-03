@@ -807,3 +807,45 @@ h1, h2, h3 { font-family: 'Manrope', sans-serif; text-wrap: balance; }
     .diag-dims-grid { grid-template-columns: 1fr; }
     .diag-nav-buttons .btn { padding: 0.8rem 1.25rem; font-size: 0.9rem; }
 }
+
+/* Separación entre la etiqueta de sección y "Dimensión: ..." (de main) */
+.diag-step-chip { vertical-align: middle; }
+.diag-step-chip + .diag-question-dims { display: inline-block; margin-left: 1rem; margin-bottom: 1.25rem; vertical-align: middle; }
+@media (max-width: 560px) {
+    .diag-step-chip + .diag-question-dims { display: block; margin: -.5rem 0 1.25rem; }
+}
+
+/* ===== Móvil: estructura del cuestionario (de main) ===== */
+.diag-question-dims + br { display: none; }
+
+@media (max-width: 560px) {
+    .diag-main { padding-top: 1.25rem; padding-bottom: 2rem; min-height: 0; }
+    .diag-progress-wrap { margin-bottom: 1.1rem; }
+    .diag-step-card { padding: 1.25rem; }
+    .diag-step-chip { margin-bottom: .6rem; }
+    .diag-options { gap: .5rem; }
+    .diag-option label { padding: .7rem .9rem; gap: .85rem; }
+    .diag-option .diag-opt-num { width: 30px; height: 30px; flex: none; }
+    .diag-option .diag-opt-label { font-size: .88rem; }
+    .diag-choice-option label { padding: .8rem .9rem; min-height: 48px; font-size: .92rem; }
+    .diag-textarea { min-height: 120px; }
+
+    /* Botones Atrás / Siguiente siempre a mano, pegados abajo */
+    .diag-nav-buttons {
+        position: sticky; bottom: 0; z-index: 20;
+        margin: 1rem -1.25rem 0; padding: .75rem 1.25rem calc(.75rem + env(safe-area-inset-bottom));
+        background: var(--color-bg-dark); border-top: 1px solid rgba(233, 236, 244, .12);
+    }
+
+    /* Resultados */
+    .diag-global-score { padding: 1.25rem; gap: 1.25rem; }
+    .diag-global-ring { width: 128px; height: 128px; }
+    .diag-results-subtitle { font-size: 1.15rem; margin-top: 2rem; }
+    .diag-foundations-list li, .diag-usecases-list li { padding: 1rem; font-size: .92rem; }
+    .diag-usecases-list li { padding-left: 2.9rem; }
+    .diag-usecases-list li::before { left: 1rem; top: 1rem; }
+    .diag-cta-box { padding: 1.5rem 1.25rem; margin-top: 2rem; }
+    .diag-cta-buttons .btn, .diag-cta-step2 .btn { width: 100%; }
+    .diag-restart { margin-top: 1.5rem; }
+}
+
