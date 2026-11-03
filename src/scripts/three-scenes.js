@@ -1,5 +1,5 @@
 // Small Three.js scenes, loaded on demand:
-//   [data-orb]  liquid-metal orb (About)         [data-gyro] orbiting rings (final call to action)
+//   [data-orb]  liquid-metal orb (About)
 //   [data-lock] 3D padlocks (under construction)
 //   [data-bars] 3D columns that grow when seen (case study)   [data-rubik] Rubik-style cube with turning layers (start)
 //   [data-tesseract] 4D hypercube (concept: "Tesseract" by @ln-dev7, 21st.dev id 29270); with data-scroll it is
@@ -146,47 +146,6 @@ const buildOrb = ({ THREE, scene }) => {
       material.uniforms.uTime.value = seconds
       orb.rotation.y = seconds * 0.12 + p.x * 0.4
       orb.rotation.x = p.y * 0.25
-    },
-  }
-}
-
-// Gyroscope: three tilted rings with traveling beads around a wireframe core.
-const buildGyro = ({ THREE, scene }) => {
-  const group = new THREE.Group()
-  scene.add(group)
-  const makeCircle = (radius, color) => {
-    const points = []
-    for (let i = 0; i <= 200; i++) {
-      const angle = (i / 200) * Math.PI * 2
-      points.push(new THREE.Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius))
-    }
-    return new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.7 }))
-  }
-  const rings = [
-    { r: 2.1, color: colors.cyan, speed: 0.5, tilt: [0.0, 0.0, 0.0] },
-    { r: 1.65, color: colors.mid, speed: -0.7, tilt: [Math.PI / 2, 0.0, 0.0] },
-    { r: 1.2, color: colors.violet, speed: 0.9, tilt: [0.0, 0.0, Math.PI / 2] },
-  ].map((ring) => {
-    const pivot = new THREE.Group()
-    pivot.add(makeCircle(ring.r, ring.color))
-    const bead = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), new THREE.MeshBasicMaterial({ color: ring.color }))
-    bead.add(new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), new THREE.MeshBasicMaterial({ color: ring.color, transparent: true, opacity: 0.18 })))
-    pivot.add(bead)
-    group.add(pivot)
-    return { ...ring, pivot, bead }
-  })
-  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.55, 1), new THREE.MeshBasicMaterial({ color: colors.cyan, wireframe: true, transparent: true, opacity: 0.6 }))
-  group.add(core)
-  return {
-    update(seconds, p) {
-      rings.forEach((ring, index) => {
-        ring.pivot.rotation.set(ring.tilt[0] + seconds * 0.15 * (index + 1), seconds * 0.1 * (index + 1), ring.tilt[2])
-        const angle = seconds * ring.speed + index * 2
-        ring.bead.position.set(Math.cos(angle) * ring.r, 0, Math.sin(angle) * ring.r)
-      })
-      core.rotation.set(seconds * 0.4, seconds * 0.3, 0)
-      group.rotation.y = p.x * 0.5
-      group.rotation.x = p.y * 0.35
     },
   }
 }
@@ -613,7 +572,6 @@ const buildMorph = ({ THREE, scene, camera, host }) => {
 
 const scenes = [
   ['[data-orb]', buildOrb, { z: 4.4 }],
-  ['[data-gyro]', buildGyro, { z: 6.2 }],
   ['[data-lock]', buildLock, { z: 4.2, fov: 38 }],
   ['[data-bars]', buildBars, { z: 8, fov: 36 }],
   ['[data-rubik]', buildRubik, { z: 7.4, fov: 36 }],
