@@ -522,3 +522,18 @@ p { text-wrap: pretty; }
 .reach-globe canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; opacity: 0; transition: opacity 1s var(--ease-out); }
 .reach-globe.is-live canvas { opacity: 1; }
 @media (max-width: 900px) { .reach-grid { grid-template-columns: 1fr; } .reach-globe { width: min(460px, 100%); } }
+
+/* Spotlight, border beam and magnetic buttons (21st.dev ports) */
+.spotlight { position: absolute; z-index: -1; top: -10rem; left: 0; width: 138%; height: 169%; opacity: 0; pointer-events: none; animation: spotlight 2s ease .75s 1 forwards; }
+.spotlight--hero { top: -12rem; }
+@media (min-width: 1024px) { .spotlight { left: 15rem; top: -5rem; width: 84%; } .spotlight--hero { top: -6rem; } }
+@keyframes spotlight { 0% { opacity: 0; transform: translate(-72px, -62px) scale(.5); } 100% { opacity: 1; transform: translate(0, 0) scale(1); } }
+
+.screen-device, .contact-form { position: relative; overflow: clip; }
+.beam { --beam-w: 1px; --beam-base: rgba(255, 255, 255, .1); position: absolute; z-index: 0; inset: 0; border: var(--beam-w) solid transparent; border-radius: inherit; pointer-events: none; -webkit-mask: linear-gradient(transparent, transparent), linear-gradient(red, red); -webkit-mask-clip: padding-box, border-box; -webkit-mask-composite: xor; mask: linear-gradient(transparent, transparent), linear-gradient(red, red); mask-clip: padding-box, border-box; mask-composite: intersect; }
+.beam::before { position: absolute; z-index: -1; inset: 0; border: var(--beam-w) solid var(--beam-base); border-radius: inherit; content: ''; }
+.beam--light { --beam-base: rgba(9, 11, 18, .1); }
+.beam > i { position: absolute; inset: 0; width: var(--beam-light, 300px); aspect-ratio: 1; background: radial-gradient(ellipse at center, var(--beam-color, #fff), transparent, transparent); offset-path: var(--path); offset-distance: 0%; animation: beam var(--beam-duration, 10s) linear infinite; }
+@keyframes beam { to { offset-distance: 100%; } }
+[data-magnetic] { will-change: translate; }
+@media (prefers-reduced-motion: reduce) { .spotlight { animation: none; opacity: 1; } .beam > i { animation: none; } }

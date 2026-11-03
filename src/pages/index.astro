@@ -1,4 +1,5 @@
 ---
+import Spotlight from '../components/Spotlight.astro'
 import '../styles/global.css'
 
 const bookingUrl = 'https://cal.com/kairos-buppna/kairos-lab-de-ia'
@@ -104,7 +105,7 @@ const channels = [
           <a href="#proceso">Proceso</a>
           <a href="#caso">Caso de éxito</a>
           <a href="#contacto">Contacto</a>
-          <a class="pill pill-brand nav-cta" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="pill pill-brand nav-cta" data-magnetic="0.25" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
       </div>
     </header>
@@ -112,6 +113,7 @@ const channels = [
     <main id="contenido">
       <section class="hero" id="inicio" aria-labelledby="hero-title">
         <div class="hero-3d" data-hero-3d aria-hidden="true"><canvas></canvas></div>
+        <Spotlight id="spot-hero" class="spotlight--hero" fill="#8191e7" />
         <div class="hero-tubes" data-tubes aria-hidden="true"><canvas></canvas></div>
         <div class="hero-lens" data-glass data-glass-drag data-radius="999" data-bevel="37" data-scale="48" data-aberration="14" data-frost="0.4" data-tint="0.06" aria-hidden="true"></div>
         <div class="container hero-grid">
@@ -119,7 +121,7 @@ const channels = [
             <h1 id="hero-title">Deja de apagar incendios a las 11 de la noche.</h1>
             <p class="hero-lede">KAIROS es un lab de IA que convierte problemas de tu operación en soluciones.</p>
             <div class="hero-actions">
-              <a class="pill pill-brand" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              <a class="pill pill-brand" data-magnetic="0.35" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
               <a class="quiet-link" href="#soluciones">Conocer las soluciones <span aria-hidden="true">↓</span></a>
             </div>
           </div>
@@ -177,7 +179,7 @@ const channels = [
             <h2 id="screen-title">Vea su operación completa en un solo lugar.</h2>
             <p>Cada pedido, tarea y seguimiento queda conectado. Usted ve qué avanzó, qué espera su aprobación y qué necesita a una persona.</p>
           </div>
-          <div class="screen-device" data-reveal><div class="screen-stage">
+          <div class="screen-device" data-reveal><div class="beam" data-beam data-color="#5ad7ee" data-width="360" data-duration="9" aria-hidden="true"><i></i></div><div class="screen-stage">
             <div class="panel" data-tilt="3" role="img" aria-label="Ejemplo de un panel de operación con tareas automáticas, aprobaciones pendientes y alertas para el equipo">
               <div class="panel-top"><strong>Hoy · Operación</strong><span class="sample-tag">Datos de ejemplo</span></div>
               <div class="panel-stats">
@@ -239,7 +241,7 @@ const channels = [
               <h3>KAIROS Solution</h3>
               <p class="solution-type">Diagnóstico e implementación</p>
               <p class="solution-copy">Analizamos tu operación, definimos la solución adecuada y la integramos contigo.</p>
-              <a class="pill pill-brand" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+              <a class="pill pill-brand" data-magnetic="0.35" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
             </article>
             {apps.map((app) => (
               <article class="solution-app" data-reveal data-tilt="5">
@@ -336,6 +338,7 @@ const channels = [
             <div class="tess" data-tesseract aria-hidden="true"><canvas></canvas></div>
           </div>
           <form class="contact-form" data-contact-form data-whatsapp={whatsappNumber} novalidate data-reveal>
+            <div class="beam beam--light" data-beam data-color="#7a4fc8" data-width="300" data-duration="8" aria-hidden="true"><i></i></div>
             <div class="field"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" data-field required autocomplete="name" /><p class="field-error" role="alert"></p></div>
             <div class="field"><label for="f-empresa">Empresa <span>(opcional)</span></label><input id="f-empresa" name="empresa" data-field autocomplete="organization" /><p class="field-error"></p></div>
             <div class="field"><label for="f-contacto">Tu WhatsApp</label><input id="f-contacto" name="contacto" data-field required inputmode="tel" autocomplete="tel" /><p class="field-error" role="alert"></p></div>
@@ -368,7 +371,7 @@ const channels = [
         <div class="gyro" data-gyro aria-hidden="true"><canvas></canvas></div>
         <div class="container final-cta-inner" data-reveal>
           <h2 id="cta-title">¿Qué parte de tu negocio te gustaría hacer avanzar?</h2>
-          <a class="pill pill-brand" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="pill pill-brand" data-magnetic="0.35" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
       </section>
     </main>
@@ -398,6 +401,8 @@ const channels = [
       import '../scripts/ascii-cube.js'
       import '../scripts/liquid-glass.js'
       import '../scripts/globe.js'
+      import '../scripts/border-beam.js'
+      import '../scripts/magnetic.js'
       import '../scripts/tilt.js'
       import '../scripts/wave-lines.js'
       import '../scripts/digits.js'
