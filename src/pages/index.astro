@@ -113,6 +113,7 @@ const channels = [
       <section class="hero" id="inicio" aria-labelledby="hero-title">
         <div class="hero-3d" data-hero-3d aria-hidden="true"><canvas></canvas></div>
         <div class="hero-tubes" data-tubes aria-hidden="true"><canvas></canvas></div>
+        <div class="hero-lens" data-glass data-glass-drag data-radius="999" data-bevel="37" data-scale="48" data-aberration="14" data-frost="0.4" data-tint="0.06" aria-hidden="true"></div>
         <div class="container hero-grid">
           <div class="hero-copy" data-reveal>
             <h1 id="hero-title">Deja de apagar incendios a las 11 de la noche.</h1>
@@ -289,6 +290,23 @@ const channels = [
         </div>
       </section>
 
+      <section class="reach" id="alcance" aria-labelledby="reach-title">
+        <div class="container reach-grid">
+          <div class="reach-copy" data-reveal>
+            <p class="section-label">Alcance</p>
+            <h2 id="reach-title">Desde Ambato, para toda la región.</h2>
+            <p>Trabajamos con equipos en Ecuador y Latinoamérica. Esté donde esté, el proceso es el mismo: entender, diseñar, construir y acompañar.</p>
+            <dl class="reach-stats">
+              <div><dt>6</dt><dd>países con clientes</dd></div>
+              <div><dt>14</dt><dd>procesos automatizados</dd></div>
+              <div><dt>&lt;48 h</dt><dd>primera respuesta</dd></div>
+            </dl>
+            <span class="sample-tag reach-tag">Datos de ejemplo</span>
+          </div>
+          <div class="reach-globe" data-globe data-reveal><canvas aria-label="Globo interactivo con las ciudades donde trabajamos"></canvas></div>
+        </div>
+      </section>
+
       <section class="start" id="empezar" aria-labelledby="start-title">
         <div class="crystals" data-crystal aria-hidden="true"><canvas></canvas></div>
         <div class="container">
@@ -298,7 +316,7 @@ const channels = [
           </div>
           <div class="start-grid">
             {starts.map((item) => (
-              <a class="start-card" data-tilt="6" href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener noreferrer' : undefined} data-reveal>
+              <a class="start-card" data-glass data-radius="20" data-bevel="18" data-scale="26" data-aberration="3" data-frost="0.4" data-tint="0.05" data-tilt="6" href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener noreferrer' : undefined} data-reveal>
                 <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href={`#i-${item.icon}`}/></svg></span>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
@@ -378,6 +396,8 @@ const channels = [
       import '../scripts/tubes-cursor.js'
       import '../scripts/ripples.js'
       import '../scripts/ascii-cube.js'
+      import '../scripts/liquid-glass.js'
+      import '../scripts/globe.js'
       import '../scripts/tilt.js'
       import '../scripts/wave-lines.js'
       import '../scripts/digits.js'

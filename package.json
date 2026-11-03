@@ -13,6 +13,7 @@
     "preview": "astro preview --host 0.0.0.0"
   },
   "dependencies": {
+    "cobe": "0.6.3",
     "three": "^0.187.0",
     "threejs-components": "0.0.19"
   }
