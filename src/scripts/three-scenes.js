@@ -1,7 +1,7 @@
 // Small Three.js scenes, loaded on demand:
 //   [data-orb]  liquid-metal orb (About)         [data-gyro] orbiting rings (final call to action)
 //   [data-lock] 3D padlocks (under construction)
-//   [data-bars] 3D columns that grow when seen (case study)   [data-crystal] floating faceted crystals (start)
+//   [data-bars] 3D columns that grow when seen (case study)   [data-rubik] Rubik-style cube with turning layers (start)
 //   [data-tesseract] 4D hypercube (concept: "Tesseract" by @ln-dev7, 21st.dev id 29270); with data-scroll it is
 //   scrubbed by the scroll position of its [data-scrub] section: scattered points assemble into the cube
 // Each host holds a <canvas>. They draw only while on screen and stay still under reduced motion.
@@ -417,32 +417,196 @@ const buildBars = async ({ THREE, scene, host }) => {
   }
 }
 
-// Faceted crystals that drift and turn (start section, dark surface).
-const buildCrystals = ({ THREE, scene }) => {
+// Rubik-style cube: 27 rounded cubies whose layers keep turning (start section, dark surface).
+const buildRubik = async ({ THREE, scene }) => {
+  const { RoundedBoxGeometry } = await import('three/addons/geometries/RoundedBoxGeometry.js')
   lights(THREE, scene)
+  const inner = new THREE.MeshStandardMaterial({ color: '#131a30', metalness: 0.4, roughness: 0.5 })
+  const face = (color) => new THREE.MeshStandardMaterial({ color, metalness: 0.45, roughness: 0.24 })
+  const geometry = new RoundedBoxGeometry(0.92, 0.92, 0.92, 3, 0.12)
   const group = new THREE.Group()
+  const pivot = new THREE.Group()
+  group.add(pivot)
   scene.add(group)
-  const specs = [
-    { geo: new THREE.OctahedronGeometry(1, 0), color: colors.cyan, pos: [-1.5, 0.5, 0], size: 1.05, speed: 0.35 },
-    { geo: new THREE.IcosahedronGeometry(1, 0), color: colors.violet, pos: [1.1, -0.7, -0.6], size: 0.85, speed: -0.28 },
-    { geo: new THREE.TetrahedronGeometry(1, 0), color: colors.mid, pos: [0.7, 1.3, 0.4], size: 0.6, speed: 0.5 },
-    { geo: new THREE.OctahedronGeometry(1, 0), color: colors.cyan, pos: [2.2, 0.2, -1.2], size: 0.32, speed: -0.6 },
-  ]
-  const meshes = specs.map((spec) => {
-    const mesh = new THREE.Mesh(spec.geo, new THREE.MeshStandardMaterial({ color: spec.color, metalness: 0.6, roughness: 0.18, flatShading: true }))
-    mesh.scale.setScalar(spec.size)
-    mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(spec.geo), new THREE.LineBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.35 })))
-    group.add(mesh)
-    return { mesh, ...spec }
-  })
+
+  const cubies = []
+  for (let x = -1; x <= 1; x++) {
+    for (let y = -1; y <= 1; y++) {
+      for (let z = -1; z <= 1; z++) {
+        // order of BoxGeometry groups: +x, -x, +y, -y, +z, -z
+        const materials = [
+          x === 1 ? face(colors.cyan) : inner,
+          x === -1 ? face('#3b8fc4') : inner,
+          y === 1 ? face('#e9ecf4') : inner,
+          y === -1 ? face(colors.mid) : inner,
+          z === 1 ? face(colors.violet) : inner,
+          z === -1 ? face('#6a3fb0') : inner,
+        ]
+        const cubie = new THREE.Mesh(geometry, materials)
+        cubie.position.set(x, y, z)
+        group.add(cubie)
+        cubies.push(cubie)
+      }
+    }
+  }
+
+  const axes = ['x', 'y', 'z']
+  let turn = null
+  let next = 1.2
   return {
     update(seconds, p) {
-      meshes.forEach((item, index) => {
-        item.mesh.rotation.set(seconds * item.speed, seconds * item.speed * 0.8 + index, seconds * 0.1)
-        item.mesh.position.set(item.pos[0], item.pos[1] + Math.sin(seconds * 0.8 + index * 1.7) * 0.18, item.pos[2])
-      })
-      group.rotation.y = p.x * 0.4
-      group.rotation.x = p.y * 0.25
+      if (!turn && seconds > next) {
+        const axis = axes[Math.floor(Math.random() * 3)]
+        const layer = Math.floor(Math.random() * 3) - 1
+        pivot.rotation.set(0, 0, 0)
+        cubies.filter((cubie) => Math.round(cubie.position[axis]) === layer).forEach((cubie) => pivot.attach(cubie))
+        turn = { start: seconds, axis, dir: Math.random() < 0.5 ? 1 : -1 }
+      }
+      if (turn) {
+        const t = Math.min((seconds - turn.start) / 0.8, 1)
+        pivot.rotation[turn.axis] = turn.dir * (Math.PI / 2) * (1 - Math.pow(1 - t, 3))
+        if (t >= 1) {
+          pivot.children.slice().forEach((cubie) => {
+            group.attach(cubie)
+            cubie.position.set(Math.round(cubie.position.x), Math.round(cubie.position.y), Math.round(cubie.position.z))
+          })
+          pivot.rotation.set(0, 0, 0)
+          turn = null
+          next = seconds + 0.45
+        }
+      }
+      group.rotation.y = seconds * 0.35 + p.x * 0.4
+      group.rotation.x = 0.55 + p.y * 0.2
+    },
+  }
+}
+
+// Scroll-driven morph: one cloud of particles that becomes a different shape at each step of the pinned section
+// (scattered data -> connected lattice -> flowing knot -> ordered sphere), with a turbulent burst in between.
+const buildMorph = ({ THREE, scene, camera, host }) => {
+  const section = host.closest('[data-scrub]')
+  const steps = section ? [...section.querySelectorAll('.scrub-steps li')] : []
+  const count = small ? 2400 : 5600
+  const shapes = [0, 1, 2, 3].map(() => new Float32Array(count * 3))
+  const seeds = new Float32Array(count)
+  const golden = Math.PI * (3 - Math.sqrt(5))
+  const grid = [-1.35, -0.45, 0.45, 1.35]
+  for (let i = 0; i < count; i++) {
+    seeds[i] = Math.random()
+    // 0: scattered cloud
+    const radius = 1.2 + Math.random() * 1.7
+    const theta = Math.random() * Math.PI * 2
+    const phi = Math.acos(2 * Math.random() - 1)
+    shapes[0].set([radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi) * 0.8, radius * Math.sin(phi) * Math.sin(theta)], i * 3)
+    // 1: connected lattice, particles ride the lines of a 4x4x4 grid
+    const free = Math.floor(Math.random() * 3)
+    const line = [grid[Math.floor(Math.random() * 4)], grid[Math.floor(Math.random() * 4)], (Math.random() * 2 - 1) * 1.35]
+    const lattice = [0, 0, 0]
+    let k = 0
+    for (let axis = 0; axis < 3; axis++) lattice[axis] = axis === free ? line[2] : line[k++]
+    shapes[1].set(lattice, i * 3)
+    // 2: torus knot, the flow of automated work
+    const t = Math.random() * Math.PI * 2
+    const kr = 1.25 + 0.5 * Math.cos(3 * t)
+    const jitter = () => (Math.random() - 0.5) * 0.26
+    shapes[2].set([kr * Math.cos(2 * t) * 1.15 + jitter(), kr * Math.sin(2 * t) * 1.15 + jitter(), 0.7 * Math.sin(3 * t) * 1.4 + jitter()], i * 3)
+    // 3: ordered sphere with two orbit rings
+    if (i % 5 < 4) {
+      const y = 1 - ((i / count) * 2)
+      const ring = Math.sqrt(1 - y * y)
+      shapes[3].set([Math.cos(golden * i) * ring * 1.7, y * 1.7, Math.sin(golden * i) * ring * 1.7], i * 3)
+    } else {
+      const angle = Math.random() * Math.PI * 2
+      const big = i % 2 === 0
+      const ringR = big ? 2.45 : 2.1
+      const v = [Math.cos(angle) * ringR, 0, Math.sin(angle) * ringR]
+      const tilt = big ? 0.5 : -0.6
+      shapes[3].set([v[0], v[1] * Math.cos(tilt) - v[2] * Math.sin(tilt), v[1] * Math.sin(tilt) + v[2] * Math.cos(tilt)], i * 3)
+    }
+  }
+
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(count * 3), 3))
+  ;['aA', 'aB', 'aC', 'aD'].forEach((name, index) => geometry.setAttribute(name, new THREE.BufferAttribute(shapes[index], 3)))
+  geometry.setAttribute('aSeed', new THREE.BufferAttribute(seeds, 1))
+  const material = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    uniforms: {
+      uP: { value: 0 },
+      uTime: { value: 0 },
+      uPixel: { value: Math.min(window.devicePixelRatio || 1, small ? 1.25 : 1.75) * (small ? 52 : 34) },
+      uCyan: { value: new THREE.Color(colors.cyan) },
+      uViolet: { value: new THREE.Color(colors.violet) },
+    },
+    vertexShader: `
+      attribute vec3 aA; attribute vec3 aB; attribute vec3 aC; attribute vec3 aD; attribute float aSeed;
+      uniform float uP; uniform float uTime; uniform float uPixel; uniform vec3 uCyan; uniform vec3 uViolet;
+      varying vec3 vColor; varying float vAlpha;
+      void main() {
+        float seg = floor(min(uP, 2.9999));
+        float f = uP - seg;
+        vec3 a = seg < 0.5 ? aA : (seg < 1.5 ? aB : aC);
+        vec3 b = seg < 0.5 ? aB : (seg < 1.5 ? aC : aD);
+        float delayed = clamp((f - aSeed * 0.45) / 0.55, 0.0, 1.0);
+        float e = delayed * delayed * (3.0 - 2.0 * delayed);
+        vec3 p = mix(a, b, e);
+        float burst = sin(e * 3.14159);
+        p += vec3(sin(uTime * 1.2 + aSeed * 40.0), cos(uTime * 1.0 + aSeed * 31.0), sin(uTime * 0.8 + aSeed * 23.0)) * (0.035 + 0.7 * burst * aSeed);
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
+        gl_PointSize = (0.8 + aSeed * 1.5) * uPixel / -mv.z;
+        gl_Position = projectionMatrix * mv;
+        vColor = mix(uCyan, uViolet, smoothstep(-2.2, 2.2, p.y * 0.8 + p.x * 0.6));
+        vAlpha = 0.45 + 0.4 * aSeed;
+      }`,
+    fragmentShader: `
+      varying vec3 vColor; varying float vAlpha;
+      void main() {
+        float d = length(gl_PointCoord - 0.5);
+        gl_FragColor = vec4(vColor, smoothstep(0.5, 0.0, d) * vAlpha);
+      }`,
+  })
+  const points = new THREE.Points(geometry, material)
+  points.frustumCulled = false
+  const group = new THREE.Group()
+  group.add(points)
+  scene.add(group)
+
+  let smooth = 0
+  let lastStep = -1
+  return {
+    update(seconds, pointerNow) {
+      let progress = 0.7
+      if (section) {
+        const box = section.getBoundingClientRect()
+        progress = Math.min(Math.max(-box.top / Math.max(box.height - window.innerHeight, 1), 0), 1)
+      }
+      smooth += (progress - smooth) * (reducedMotion ? 1 : 0.08)
+      // each step holds its shape for the first part of its slice, then morphs into the next
+      const x = smooth * 4
+      const index = Math.min(Math.floor(x), 3)
+      const local = x - index
+      material.uniforms.uP.value = index < 3 ? index + Math.min(Math.max((local - 0.4) / 0.6, 0), 1) : 3
+      material.uniforms.uTime.value = seconds
+
+      const wide = camera.aspect > 1.1
+      const halfHeight = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z
+      const halfWidth = halfHeight * camera.aspect
+      const scale = wide ? Math.min(0.95, (halfWidth * 0.46) / 2.6) : 0.55
+      group.scale.setScalar(scale)
+      group.position.set(wide ? halfWidth * 0.5 : 0, wide ? 0 : halfHeight * 0.45, 0)
+      group.rotation.y = seconds * 0.18 + smooth * 2.4 + pointerNow.x * 0.35
+      group.rotation.x = 0.2 + Math.sin(seconds * 0.3) * 0.08 + pointerNow.y * 0.2
+
+      if (steps.length && section) {
+        const step = Math.min(steps.length - 1, Math.floor(smooth * steps.length * 0.999))
+        if (step !== lastStep) {
+          lastStep = step
+          steps.forEach((li, i) => li.classList.toggle('is-on', i === step))
+        }
+        section.style.setProperty('--p', smooth.toFixed(3))
+      }
     },
   }
 }
@@ -452,7 +616,8 @@ const scenes = [
   ['[data-gyro]', buildGyro, { z: 6.2 }],
   ['[data-lock]', buildLock, { z: 4.2, fov: 38 }],
   ['[data-bars]', buildBars, { z: 8, fov: 36 }],
-  ['[data-crystal]', buildCrystals, { z: 6.5 }],
+  ['[data-rubik]', buildRubik, { z: 7.4, fov: 36 }],
+  ['[data-morph]', buildMorph, { z: 9, fov: 40 }],
   ['[data-tesseract]', buildTesseract, { z: 9, fov: 40 }],
 ]
 
