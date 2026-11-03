@@ -112,6 +112,7 @@ const channels = [
     <main id="contenido">
       <section class="hero" id="inicio" aria-labelledby="hero-title">
         <div class="hero-3d" data-hero-3d aria-hidden="true"><canvas></canvas></div>
+        <div class="hero-tubes" data-tubes aria-hidden="true"><canvas></canvas></div>
         <div class="container hero-grid">
           <div class="hero-copy" data-reveal>
             <h1 id="hero-title">Deja de apagar incendios a las 11 de la noche.</h1>
@@ -175,7 +176,7 @@ const channels = [
             <h2 id="screen-title">Vea su operación completa en un solo lugar.</h2>
             <p>Cada pedido, tarea y seguimiento queda conectado. Usted ve qué avanzó, qué espera su aprobación y qué necesita a una persona.</p>
           </div>
-          <div class="screen-stage" data-reveal>
+          <div class="screen-device" data-reveal><div class="screen-stage">
             <div class="panel" data-tilt="3" role="img" aria-label="Ejemplo de un panel de operación con tareas automáticas, aprobaciones pendientes y alertas para el equipo">
               <div class="panel-top"><strong>Hoy · Operación</strong><span class="sample-tag">Datos de ejemplo</span></div>
               <div class="panel-stats">
@@ -195,7 +196,7 @@ const channels = [
               <p class="bubble bubble--out">Claro. La preparo ahora y su equipo la aprueba antes de enviarla.</p>
               <p class="bubble bubble--note"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Enviada a aprobación</p>
             </div>
-          </div>
+          </div></div>
         </div>
       </section>
 
@@ -254,7 +255,8 @@ const channels = [
 
       <section class="process" id="proceso" aria-labelledby="process-title">
         <canvas class="wave-canvas" data-wave data-lines="26" data-amplitude="24" aria-hidden="true"></canvas>
-        <div class="container">
+        <div class="container process-container">
+          <div class="ascii" data-ascii-cube aria-hidden="true"><canvas></canvas></div>
           <div class="section-heading section-heading--single" data-reveal>
             <p class="section-label">Cómo trabajamos</p>
             <h2 id="process-title">Del diagnóstico a la solución, en cuatro pasos.</h2>
@@ -344,6 +346,7 @@ const channels = [
       </section>
 
       <section class="final-cta" aria-labelledby="cta-title">
+        <div class="ripples" data-ripples aria-hidden="true"><canvas></canvas></div>
         <div class="gyro" data-gyro aria-hidden="true"><canvas></canvas></div>
         <div class="container final-cta-inner" data-reveal>
           <h2 id="cta-title">¿Qué parte de tu negocio te gustaría hacer avanzar?</h2>
@@ -372,6 +375,9 @@ const channels = [
       import '../scripts/hero-3d.js'
       import '../scripts/knot-3d.js'
       import '../scripts/three-scenes.js'
+      import '../scripts/tubes-cursor.js'
+      import '../scripts/ripples.js'
+      import '../scripts/ascii-cube.js'
       import '../scripts/tilt.js'
       import '../scripts/wave-lines.js'
       import '../scripts/digits.js'
@@ -405,17 +411,29 @@ const channels = [
         revealItems.forEach((item) => item.classList.add('is-visible'))
       }
 
-      const stage = document.querySelector('.screen-stage')
-      if (stage && !reducedMotion) {
-        const tiltOnScroll = () => {
-          const box = stage.getBoundingClientRect()
-          const progress = Math.min(Math.max((window.innerHeight - box.top) / (window.innerHeight * 0.9), 0), 1)
-          stage.style.setProperty('--sx', `${((1 - progress) * 16).toFixed(2)}deg`)
+      // Container Scroll Animation (21st.dev id 1081, @manuarora700): the framed screen starts tilted back and
+      // slightly large, and settles flat as the section scrolls through; the heading drifts up with it.
+      const device = document.querySelector('.screen-device')
+      const screen = document.querySelector('.screen')
+      const heading = document.querySelector('.screen .section-heading')
+      if (device && screen) {
+        const settle = () => {
+          if (reducedMotion) {
+            device.style.setProperty('--sx', '0deg')
+            device.style.setProperty('--ss', '1')
+            return
+          }
+          const box = screen.getBoundingClientRect()
+          const raw = (window.innerHeight - box.top) / (window.innerHeight + box.height)
+          const progress = Math.min(Math.max(raw / 0.55, 0), 1)
+          const narrow = window.innerWidth <= 768
+          device.style.setProperty('--sx', `${((1 - progress) * 20).toFixed(2)}deg`)
+          device.style.setProperty('--ss', (narrow ? 0.9 + progress * 0.1 : 1.05 - progress * 0.05).toFixed(3))
+          if (heading) heading.style.translate = `0 ${(-progress * 60).toFixed(1)}px`
         }
-        tiltOnScroll()
-        window.addEventListener('scroll', tiltOnScroll, { passive: true })
-      } else if (stage) {
-        stage.style.setProperty('--sx', '0deg')
+        settle()
+        window.addEventListener('scroll', settle, { passive: true })
+        window.addEventListener('resize', settle, { passive: true })
       }
 
       const closeMenu = () => {

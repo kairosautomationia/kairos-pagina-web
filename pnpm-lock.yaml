@@ -11,6 +11,9 @@ importers:
       three:
         specifier: ^0.187.0
         version: 0.187.0
+      threejs-components:
+        specifier: 0.0.19
+        version: 0.0.19
     devDependencies:
       astro:
         specifier: ^7.3.5
@@ -1291,6 +1294,9 @@ packages:
 
   three@0.187.0:
     resolution: {integrity: sha512-Qiu7R+Cmh8CstZsY1uJOSWnVlfo7ZtNLV7mF8Jltk3LB3AtDu9cRZlcnRKkAk8Y4z6KKw35z7Y7Urd7jWY8etA==}
+
+  threejs-components@0.0.19:
+    resolution: {integrity: sha512-4Zk9StS8nLM07h66g2q5WtZWRDSe5D58W4whCq8MkT95+nidnYS8SNr49kYr44/sfN6NKwz0ibA9APkxKT/dWA==}
 
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
@@ -2713,6 +2719,8 @@ snapshots:
       sax: 1.6.1
 
   three@0.187.0: {}
+
+  threejs-components@0.0.19: {}
 
   tiny-inflate@1.0.3: {}
 

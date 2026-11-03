@@ -312,8 +312,9 @@ p { text-wrap: pretty; }
 
 /* Screen: glow stage with a tilted glass panel */
 .screen { background: radial-gradient(70% 55% at 50% 0%, rgba(129, 145, 231, .26), transparent 70%), radial-gradient(45% 50% at 100% 100%, rgba(90, 215, 238, .14), transparent 70%), var(--ink-950); }
-.screen-stage { --sx: 16deg; }
-.panel { --rx: var(--sx); --ry: -4deg; background: rgba(14, 17, 26, .7); border-color: rgba(129, 145, 231, .35); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 50px 90px -30px rgba(0, 0, 0, .8), 0 0 90px -24px rgba(129, 145, 231, .45); }
+.screen-device { --sx: 20deg; --ss: 1.05; padding: clamp(8px, 1.4vw, 16px); border: 4px solid #2c3347; border-radius: 30px; background: #12151f; transform: perspective(1000px) rotateX(var(--sx)) scale(var(--ss)); transform-origin: center top; box-shadow: 0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 0 120px -30px rgba(129, 145, 231, .5); will-change: transform; }
+.screen-stage { padding: clamp(10px, 2vw, 24px); border-radius: 18px; background: radial-gradient(70% 90% at 20% 0%, rgba(129, 145, 231, .18), transparent 70%), #0b0d15; }
+.panel { --ry: -4deg; background: rgba(14, 17, 26, .7); border-color: rgba(129, 145, 231, .35); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 50px 90px -30px rgba(0, 0, 0, .8), 0 0 90px -24px rgba(129, 145, 231, .45); }
 .chat { background: rgba(14, 17, 26, .7); border-color: rgba(90, 215, 238, .28); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: 0 40px 70px -30px rgba(0, 0, 0, .8), 0 0 70px -24px rgba(90, 215, 238, .4); }
 
 /* Control: deep brand gradient with light text */
@@ -483,3 +484,16 @@ p { text-wrap: pretty; }
 .start { position: relative; overflow: hidden; isolation: isolate; }
 .start .container { position: relative; z-index: 1; }
 @media (max-width: 700px) { .crystals { width: 70vw; top: 0; right: -12%; opacity: .6; } .case-side { justify-items: start; } }
+
+/* 21st.dev ports: tubes cursor (hero), ripple shader (closing), ASCII cube (process) */
+.hero-tubes { position: absolute; z-index: -1; inset: 0; pointer-events: none; mix-blend-mode: screen; }
+.hero-tubes canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s var(--ease-out); }
+.hero-tubes.is-live canvas { opacity: .85; }
+.ripples { position: absolute; z-index: -2; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: .4; }
+.ripples canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s var(--ease-out); }
+.ripples.is-live canvas { opacity: 1; }
+.process-container { position: relative; }
+.ascii { position: absolute; top: -70px; right: 0; width: min(360px, 40vw); aspect-ratio: 6 / 5; pointer-events: none; }
+.ascii canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 1s var(--ease-out); }
+.ascii.is-live canvas { opacity: .95; }
+@media (max-width: 900px) { .ascii { display: none; } }
