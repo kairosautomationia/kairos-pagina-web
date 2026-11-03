@@ -441,3 +441,35 @@ p { text-wrap: pretty; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .motion-ready [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* Scroll-scrubbed 3D: the section is tall, its inner stage stays pinned while the scene follows the scroll */
+.scrub { position: relative; height: 440vh; background: radial-gradient(60% 50% at 80% 40%, rgba(129, 145, 231, .14), transparent 70%), var(--ink-950); }
+.scrub-pin { position: sticky; top: 0; display: grid; height: 100vh; overflow: hidden; align-items: center; }
+.scrub-stage { position: absolute; inset: 0; }
+.scrub-stage canvas, .tess canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 1s var(--ease-out); }
+.scrub-stage.is-live canvas, .tess.is-live canvas { opacity: 1; }
+.scrub-layout { position: relative; pointer-events: none; }
+.scrub-copy { max-width: 470px; }
+.scrub-copy h2 { margin-top: 16px; font: 600 clamp(30px, 4vw, 52px)/1.08 var(--font-display); letter-spacing: -.04em; }
+.scrub-steps { position: relative; display: grid; margin-top: 34px; list-style: none; padding: 0; }
+.scrub-steps li { display: flex; grid-area: 1 / 1; gap: 18px; align-items: flex-start; opacity: 0; translate: 0 18px; transition: opacity .5s var(--ease-out), translate .5s var(--ease-out); }
+.scrub-steps li.is-on { opacity: 1; translate: 0 0; }
+.scrub-steps li > span { color: var(--cyan); font: 600 14px/1 var(--font-display); letter-spacing: .08em; padding-top: 9px; }
+.scrub-steps h3 { font: 600 clamp(24px, 2.6vw, 32px)/1.15 var(--font-display); letter-spacing: -.03em; }
+.scrub-steps p { margin-top: 10px; color: var(--text-muted); font-size: 17px; line-height: 1.65; }
+.scrub-bar { position: absolute; right: clamp(16px, 4vw, 48px); top: 50%; width: 3px; height: 160px; translate: 0 -50%; border-radius: 3px; background: rgba(233, 236, 244, .14); overflow: hidden; }
+.scrub-bar span { display: block; width: 100%; height: 100%; background: var(--brand-gradient); transform-origin: top; transform: scaleY(var(--p, 0)); }
+.tess { position: relative; width: min(100%, 380px); aspect-ratio: 1; margin-top: 18px; pointer-events: none; }
+@media (max-width: 900px) {
+  .scrub-pin { align-items: end; padding-bottom: 8vh; }
+  .scrub-copy { max-width: none; }
+  .scrub-steps p { font-size: 15px; }
+  .tess { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scrub { height: auto; }
+  .scrub-pin { position: relative; height: auto; min-height: 100vh; padding-block: 120px; }
+  .scrub-steps { gap: 28px; }
+  .scrub-steps li { grid-area: auto; opacity: 1; translate: 0 0; }
+  .scrub-bar { display: none; }
+}

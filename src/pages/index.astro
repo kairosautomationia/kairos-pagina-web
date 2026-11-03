@@ -149,6 +149,25 @@ const channels = [
         </div>
       </section>
 
+      <section class="scrub" id="como" data-scrub aria-labelledby="scrub-title">
+        <div class="scrub-pin">
+          <div class="scrub-stage" data-tesseract data-scroll aria-hidden="true"><canvas></canvas></div>
+          <div class="container scrub-layout">
+            <div class="scrub-copy">
+              <p class="section-label">Cómo lo hacemos</p>
+              <h2 id="scrub-title">Del caos de datos a un sistema que responde.</h2>
+              <ol class="scrub-steps">
+                <li class="is-on"><span>01</span><div><h3>Todo está suelto</h3><p>Pedidos en WhatsApp, hojas de cálculo y correos que nadie conecta.</p></div></li>
+                <li><span>02</span><div><h3>Se conecta</h3><p>Unimos sus fuentes en un solo modelo de datos, sin cambiar cómo trabaja su equipo.</p></div></li>
+                <li><span>03</span><div><h3>Se automatiza</h3><p>La IA ejecuta lo repetitivo con las reglas que usted define y pide aprobación cuando importa.</p></div></li>
+                <li><span>04</span><div><h3>Usted controla</h3><p>Una pantalla, métricas claras y las decisiones siguen siendo suyas.</p></div></li>
+              </ol>
+            </div>
+          </div>
+          <div class="scrub-bar" aria-hidden="true"><span></span></div>
+        </div>
+      </section>
+
       <section class="screen" id="pantalla" aria-labelledby="screen-title">
         <div class="container">
           <div class="section-heading" data-reveal>
@@ -293,6 +312,7 @@ const channels = [
             <p class="section-label">Contacto</p>
             <h2 id="contact-title">Cuéntanos qué te quita tiempo.</h2>
             <p>Escribe tu caso y lo recibimos por WhatsApp con el mensaje ya listo. Te respondemos con los siguientes pasos.</p>
+            <div class="tess" data-tesseract aria-hidden="true"><canvas></canvas></div>
           </div>
           <form class="contact-form" data-contact-form data-whatsapp={whatsappNumber} novalidate data-reveal>
             <div class="field"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" data-field required autocomplete="name" /><p class="field-error" role="alert"></p></div>

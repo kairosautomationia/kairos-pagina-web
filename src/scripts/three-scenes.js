@@ -1,6 +1,8 @@
 // Small Three.js scenes, loaded on demand:
 //   [data-orb]  liquid-metal orb (About)         [data-gyro] orbiting rings (final call to action)
 //   [data-lock] 3D padlocks (under construction)
+//   [data-tesseract] 4D hypercube (concept: "Tesseract" by @ln-dev7, 21st.dev id 29270); with data-scroll it is
+//   scrubbed by the scroll position of its [data-scrub] section: scattered points assemble into the cube
 // Each host holds a <canvas>. They draw only while on screen and stay still under reduced motion.
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const small = window.matchMedia('(max-width: 700px)').matches
@@ -228,10 +230,144 @@ const buildLock = async ({ THREE, scene, host }) => {
   }
 }
 
+// Tesseract: a 4D hypercube projected to 3D, double-rotating. In scroll mode the rotation, the camera and a cloud
+// of scattered points are driven by how far the user has scrolled through the pinned [data-scrub] section.
+const buildTesseract = ({ THREE, scene, camera, host }) => {
+  const verts = Array.from({ length: 16 }, (_, i) => [i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? 1 : -1, i & 8 ? 1 : -1])
+  const edges = []
+  for (let i = 0; i < 16; i++) for (let b = 0; b < 4; b++) if ((i | (1 << b)) !== i) edges.push([i, i | (1 << b)])
+
+  const scrollMode = host.hasAttribute('data-scroll')
+  const section = host.closest('[data-scrub]')
+  const steps = section ? [...section.querySelectorAll('.scrub-steps li')] : []
+  const cyan = new THREE.Color(colors.cyan)
+  const violet = new THREE.Color(colors.violet)
+  const group = new THREE.Group()
+  scene.add(group)
+
+  const up = new THREE.Vector3(0, 1, 0)
+  const strutGeometry = new THREE.CylinderGeometry(1, 1, 1, 8, 1, true)
+  const core = new THREE.InstancedMesh(strutGeometry, new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.95 }), edges.length)
+  const glow = new THREE.InstancedMesh(strutGeometry, new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.14, depthWrite: false, blending: THREE.AdditiveBlending }), edges.length)
+  const nodes = new THREE.InstancedMesh(new THREE.SphereGeometry(0.075, 16, 16), new THREE.MeshBasicMaterial(), verts.length)
+  group.add(glow, core, nodes)
+
+  // Scattered points that fly onto the struts as the user scrolls.
+  const count = small ? 380 : 900
+  const scatter = new Float32Array(count * 3)
+  const slot = new Float32Array(count * 2)
+  const cloudColors = new Float32Array(count * 3)
+  const mix = new THREE.Color()
+  for (let i = 0; i < count; i++) {
+    const radius = 3.2 + Math.random() * 4.2
+    const theta = Math.random() * Math.PI * 2
+    const phi = Math.acos(2 * Math.random() - 1)
+    scatter.set([radius * Math.sin(phi) * Math.cos(theta), radius * Math.cos(phi) * 0.7, radius * Math.sin(phi) * Math.sin(theta)], i * 3)
+    slot.set([Math.floor(Math.random() * edges.length), Math.random()], i * 2)
+    mix.copy(cyan).lerp(violet, Math.random())
+    cloudColors.set([mix.r, mix.g, mix.b], i * 3)
+  }
+  const cloudGeometry = new THREE.BufferGeometry()
+  const cloudPositions = new Float32Array(count * 3)
+  cloudGeometry.setAttribute('position', new THREE.BufferAttribute(cloudPositions, 3))
+  cloudGeometry.setAttribute('color', new THREE.BufferAttribute(cloudColors, 3))
+  const cloud = new THREE.Points(cloudGeometry, new THREE.PointsMaterial({ size: small ? 0.07 : 0.05, vertexColors: true, transparent: true, opacity: 0.9, depthWrite: false, blending: THREE.AdditiveBlending }))
+  group.add(cloud)
+
+  const points = verts.map(() => new THREE.Vector3())
+  const depth = new Float32Array(verts.length)
+  const dummy = new THREE.Object3D()
+  const dir = new THREE.Vector3()
+  let smooth = 0
+  let lastStep = -1
+
+  return {
+    update(seconds, pointerNow) {
+      let progress = 0.55
+      if (scrollMode && section) {
+        const box = section.getBoundingClientRect()
+        progress = Math.min(Math.max(-box.top / Math.max(box.height - window.innerHeight, 1), 0), 1)
+      }
+      smooth += (progress - smooth) * (reducedMotion ? 1 : 0.09)
+      const assemble = Math.min(Math.max((smooth - 0.04) / 0.46, 0), 1)
+      const eased = assemble * assemble * (3 - 2 * assemble)
+
+      const t = scrollMode ? smooth * 7 + seconds * 0.12 : seconds * 0.5
+      const ca = Math.cos(t * 0.55), sa = Math.sin(t * 0.55), cb = Math.cos(t * 0.38), sb = Math.sin(t * 0.38)
+      const scale = 0.62 * 1.55
+      for (let i = 0; i < verts.length; i++) {
+        const [x, y, z, w] = verts[i]
+        const x2 = x * ca - w * sa, w2 = x * sa + w * ca
+        const y2 = y * cb - z * sb, z2 = y * sb + z * cb
+        const k = 3 / (3 - w2)
+        points[i].set(x2, y2, z2).multiplyScalar(k * scale)
+        depth[i] = (w2 + Math.SQRT2) / (2 * Math.SQRT2)
+        dummy.position.copy(points[i])
+        dummy.quaternion.identity()
+        dummy.scale.setScalar(k * (0.4 + 0.6 * eased))
+        dummy.updateMatrix()
+        nodes.setMatrixAt(i, dummy.matrix)
+        nodes.setColorAt(i, mix.copy(cyan).lerp(violet, depth[i]))
+      }
+      for (let i = 0; i < edges.length; i++) {
+        const a = points[edges[i][0]], b = points[edges[i][1]]
+        dummy.position.addVectors(a, b).multiplyScalar(0.5)
+        dir.subVectors(b, a)
+        const length = dir.length()
+        dummy.quaternion.setFromUnitVectors(up, dir.divideScalar(length))
+        const colorMix = (depth[edges[i][0]] + depth[edges[i][1]]) / 2
+        dummy.scale.set(0.012 + eased * 0.014, length, 0.012 + eased * 0.014)
+        dummy.updateMatrix()
+        core.setMatrixAt(i, dummy.matrix)
+        core.setColorAt(i, mix.copy(cyan).lerp(violet, colorMix))
+        dummy.scale.set(0.06, length, 0.06)
+        dummy.updateMatrix()
+        glow.setMatrixAt(i, dummy.matrix)
+        glow.setColorAt(i, mix)
+      }
+      ;[core, glow, nodes].forEach((mesh) => {
+        mesh.instanceMatrix.needsUpdate = true
+        if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true
+      })
+      core.material.opacity = 0.25 + eased * 0.7
+      glow.material.opacity = 0.05 + eased * 0.12
+
+      for (let i = 0; i < count; i++) {
+        const a = points[edges[slot[i * 2]][0]], b = points[edges[slot[i * 2]][1]]
+        const f = slot[i * 2 + 1]
+        const tx = a.x + (b.x - a.x) * f, ty = a.y + (b.y - a.y) * f, tz = a.z + (b.z - a.z) * f
+        const drift = (1 - eased) * 0.35
+        cloudPositions[i * 3] = scatter[i * 3] * (1 - eased) + tx * eased + Math.sin(seconds * 0.6 + i) * drift
+        cloudPositions[i * 3 + 1] = scatter[i * 3 + 1] * (1 - eased) + ty * eased + Math.cos(seconds * 0.5 + i * 1.3) * drift
+        cloudPositions[i * 3 + 2] = scatter[i * 3 + 2] * (1 - eased) + tz * eased
+      }
+      cloudGeometry.attributes.position.needsUpdate = true
+
+      const wide = camera.aspect > 1.1
+      camera.position.z = scrollMode ? 11 - smooth * 4.2 : 7.2
+      group.position.x = scrollMode && wide ? camera.aspect * 1.55 : 0
+      group.scale.setScalar(scrollMode ? (wide ? Math.min(1, camera.aspect / 1.9) : 0.5) : 1)
+      group.position.y = scrollMode && !wide ? 2.1 : 0
+      group.rotation.y = (scrollMode ? smooth * Math.PI * 1.4 : seconds * 0.12) + pointerNow.x * 0.35
+      group.rotation.x = 0.32 + pointerNow.y * 0.2
+
+      if (steps.length && section) {
+        const step = Math.min(steps.length - 1, Math.floor(smooth * steps.length * 0.999))
+        if (step !== lastStep) {
+          lastStep = step
+          steps.forEach((li, index) => li.classList.toggle('is-on', index === step))
+        }
+        section.style.setProperty('--p', smooth.toFixed(3))
+      }
+    },
+  }
+}
+
 const scenes = [
   ['[data-orb]', buildOrb, { z: 4.4 }],
   ['[data-gyro]', buildGyro, { z: 6.2 }],
   ['[data-lock]', buildLock, { z: 4.2, fov: 38 }],
+  ['[data-tesseract]', buildTesseract, { z: 9, fov: 40 }],
 ]
 
 const start = () => {
