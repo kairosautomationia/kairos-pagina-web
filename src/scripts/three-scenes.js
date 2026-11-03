@@ -4,9 +4,12 @@
 //   [data-bars] 3D columns that grow when seen (case study)   [data-rubik] Rubik-style cube with turning layers (start)
 //   [data-tesseract] 4D hypercube (concept: "Tesseract" by @ln-dev7, 21st.dev id 29270); with data-scroll it is
 //   scrubbed by the scroll position of its [data-scrub] section: scattered points assemble into the cube
-// Each host holds a <canvas>. They draw only while on screen and stay still under reduced motion.
+// Each host holds a <canvas>. A scene only owns a WebGL context while its host is near the viewport: it is created
+// when the host approaches and fully released (context lost, GPU memory freed) shortly after it leaves, so a phone
+// never holds more than a few contexts at once. Scenes stay still under reduced motion.
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-const small = window.matchMedia('(max-width: 700px)').matches
+// "small" also covers touch devices and low-core machines: lower pixel ratio and fewer particles there.
+const small = window.matchMedia('(max-width: 700px)').matches || window.matchMedia('(pointer: coarse)').matches || (navigator.hardwareConcurrency || 8) <= 4
 
 const pointer = { x: 0, y: 0, tx: 0, ty: 0 }
 window.addEventListener('pointermove', (event) => {
@@ -40,61 +43,112 @@ float snoise(vec3 v){
   return 42.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
 }`
 
-async function mount(host, build, { fov = 40, z = 6 } = {}) {
-  const THREE = await import('three')
-  const canvas = host.querySelector('canvas')
-  let renderer
-  try {
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
-  } catch {
-    return
-  }
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.25 : 1.75))
-  const scene = new THREE.Scene()
-  const camera = new THREE.PerspectiveCamera(fov, 1, 0.1, 40)
-  camera.position.z = z
-  const scenery = await build({ THREE, scene, camera, host })
+function mount(host, build, { fov = 40, z = 6 } = {}) {
+  let session = null
+  let starting = false
+  let wanted = false
+  let timer = 0
 
-  const resize = () => {
-    const { width, height } = host.getBoundingClientRect()
-    renderer.setSize(width, height, false)
-    camera.aspect = width / Math.max(height, 1)
-    camera.updateProjectionMatrix()
-  }
-  resize()
-  new ResizeObserver(resize).observe(host)
+  const create = async () => {
+    const THREE = await import('three')
+    const stale = host.querySelector('canvas')
+    // a context that was lost cannot be reused, so every session gets a fresh canvas
+    const canvas = stale.cloneNode(false)
+    stale.replaceWith(canvas)
+    let renderer
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: !small })
+    } catch {
+      return null
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.25 : 1.75))
+    const scene = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(fov, 1, 0.1, 40)
+    camera.position.z = z
+    const scenery = await build({ THREE, scene, camera, host })
 
-  const render = (seconds) => {
-    pointer.x += (pointer.tx - pointer.x) * 0.05
-    pointer.y += (pointer.ty - pointer.y) * 0.05
-    scenery.update(seconds, pointer)
-    renderer.render(scene, camera)
-  }
-  host.classList.add('is-live')
-  if (reducedMotion) {
-    render(3)
-    return
+    const resize = () => {
+      const { width, height } = host.getBoundingClientRect()
+      if (!width || !height) return
+      renderer.setSize(width, height, false)
+      camera.aspect = width / Math.max(height, 1)
+      camera.updateProjectionMatrix()
+      if (reducedMotion) render(3)
+    }
+    const render = (seconds) => {
+      pointer.x += (pointer.tx - pointer.x) * 0.05
+      pointer.y += (pointer.ty - pointer.y) * 0.05
+      scenery.update(seconds, pointer)
+      renderer.render(scene, camera)
+    }
+    const observer = new ResizeObserver(resize)
+    observer.observe(host)
+    resize()
+    host.classList.add('is-live')
+
+    let frame = 0
+    const begin = performance.now()
+    const tick = (now) => {
+      render((now - begin) / 1000)
+      frame = requestAnimationFrame(tick)
+    }
+    const run = () => {
+      if (!frame && !document.hidden && !reducedMotion) frame = requestAnimationFrame(tick)
+    }
+    const stop = () => {
+      cancelAnimationFrame(frame)
+      frame = 0
+    }
+    const onVisibility = () => (document.hidden ? stop() : run())
+    document.addEventListener('visibilitychange', onVisibility)
+    if (reducedMotion) render(3)
+    else run()
+
+    return {
+      destroy() {
+        stop()
+        observer.disconnect()
+        document.removeEventListener('visibilitychange', onVisibility)
+        scenery.dispose?.()
+        scene.traverse((object) => {
+          object.geometry?.dispose?.()
+          const materials = Array.isArray(object.material) ? object.material : [object.material]
+          materials.forEach((material) => {
+            if (!material) return
+            Object.values(material).forEach((value) => value?.isTexture && value.dispose())
+            material.dispose?.()
+          })
+        })
+        renderer.dispose()
+        renderer.forceContextLoss()
+        host.classList.remove('is-live')
+      },
+    }
   }
 
-  let frame = 0
-  let visible = false
-  const begin = performance.now()
-  const tick = (now) => {
-    render((now - begin) / 1000)
-    frame = requestAnimationFrame(tick)
+  const activate = async () => {
+    if (session || starting) return
+    starting = true
+    const created = await create().catch((error) => {
+      console.error(error)
+      return null
+    })
+    starting = false
+    if (!created) return
+    if (wanted) session = created
+    else created.destroy()
   }
-  const run = () => {
-    if (!frame && visible && !document.hidden) frame = requestAnimationFrame(tick)
+  const deactivate = () => {
+    session?.destroy()
+    session = null
   }
-  const stop = () => {
-    cancelAnimationFrame(frame)
-    frame = 0
-  }
+
   new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting
-    visible ? run() : stop()
-  }).observe(host)
-  document.addEventListener('visibilitychange', () => (document.hidden ? stop() : run()))
+    wanted = entry.isIntersecting
+    clearTimeout(timer)
+    if (wanted) activate()
+    else timer = setTimeout(deactivate, 1200)
+  }, { rootMargin: '300px 0px' }).observe(host)
 }
 
 const colors = { cyan: '#5ad7ee', violet: '#a86be0', mid: '#8191e7', deep: '#0a0e2b' }
@@ -176,9 +230,16 @@ const buildLock = async ({ THREE, scene, host }) => {
 
   let lift = 0
   let target = 0
-  host.parentElement?.addEventListener('pointerenter', () => { target = 1 })
-  host.parentElement?.addEventListener('pointerleave', () => { target = 0 })
+  const card = host.parentElement
+  const enter = () => { target = 1 }
+  const leave = () => { target = 0 }
+  card?.addEventListener('pointerenter', enter)
+  card?.addEventListener('pointerleave', leave)
   return {
+    dispose() {
+      card?.removeEventListener('pointerenter', enter)
+      card?.removeEventListener('pointerleave', leave)
+    },
     update(seconds) {
       lift += (target - lift) * 0.12
       lock.rotation.y = Math.sin(seconds * 0.9) * 0.55

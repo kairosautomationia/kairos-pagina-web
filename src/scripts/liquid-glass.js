@@ -157,7 +157,7 @@ if (hosts.length) {
       return
     }
     const frosted = '-webkit-backdrop-filter: blur(20px) saturate(1.4); backdrop-filter: blur(20px) saturate(1.4);'
-    if (safariLike() || !supportsUrlBackdrop()) {
+    if (safariLike() || !supportsUrlBackdrop() || window.matchMedia('(pointer: coarse)').matches) {
       host.classList.add('glass--frost')
       host.style.cssText += frosted
       return

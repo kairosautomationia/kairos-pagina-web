@@ -27,6 +27,5 @@ if (wanted) {
   }
   const section = host.closest('section')
   const begin = () => new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop())).observe(section)
-  if ('requestIdleCallback' in window) requestIdleCallback(begin, { timeout: 3000 })
-  else setTimeout(begin, 1500)
+  window.addEventListener('pointermove', begin, { once: true, passive: true })
 }
