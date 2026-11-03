@@ -1,6 +1,7 @@
 // Small Three.js scenes, loaded on demand:
 //   [data-orb]  liquid-metal orb (About)         [data-gyro] orbiting rings (final call to action)
 //   [data-lock] 3D padlocks (under construction)
+//   [data-bars] 3D columns that grow when seen (case study)   [data-crystal] floating faceted crystals (start)
 //   [data-tesseract] 4D hypercube (concept: "Tesseract" by @ln-dev7, 21st.dev id 29270); with data-scroll it is
 //   scrubbed by the scroll position of its [data-scrub] section: scattered points assemble into the cube
 // Each host holds a <canvas>. They draw only while on screen and stay still under reduced motion.
@@ -363,10 +364,95 @@ const buildTesseract = ({ THREE, scene, camera, host }) => {
   }
 }
 
+const lights = (THREE, scene) => {
+  scene.add(new THREE.AmbientLight('#aab4ff', 0.9))
+  const key = new THREE.DirectionalLight('#ffffff', 2.6)
+  key.position.set(2.5, 4, 5)
+  scene.add(key)
+  const rim = new THREE.PointLight(colors.cyan, 22, 14)
+  rim.position.set(-4, 1, 3)
+  scene.add(rim)
+  const back = new THREE.PointLight(colors.violet, 18, 14)
+  back.position.set(4, -2, 2)
+  scene.add(back)
+}
+
+// Columns that rise one after another the first time the block is on screen (case study, light surface).
+const buildBars = async ({ THREE, scene, host }) => {
+  const { RoundedBoxGeometry } = await import('three/addons/geometries/RoundedBoxGeometry.js')
+  lights(THREE, scene)
+  const heights = [0.9, 1.35, 1.1, 1.8, 1.55, 2.2, 2.8]
+  const group = new THREE.Group()
+  scene.add(group)
+  const cyan = new THREE.Color(colors.cyan)
+  const violet = new THREE.Color(colors.violet)
+  const bars = heights.map((height, index) => {
+    const mesh = new THREE.Mesh(
+      new RoundedBoxGeometry(0.5, 1, 0.5, 4, 0.1),
+      new THREE.MeshStandardMaterial({ color: cyan.clone().lerp(violet, index / (heights.length - 1)), metalness: 0.35, roughness: 0.28 }),
+    )
+    mesh.position.x = (index - (heights.length - 1) / 2) * 0.72
+    group.add(mesh)
+    return { mesh, height }
+  })
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(3.4, 64), new THREE.MeshBasicMaterial({ color: '#5a38b8', transparent: true, opacity: 0.08 }))
+  floor.rotation.x = -Math.PI / 2
+  floor.position.y = -1.4
+  group.add(floor)
+  let born = null
+  return {
+    update(seconds, p) {
+      if (born === null) born = seconds
+      const age = reducedMotion ? 9 : seconds - born
+      bars.forEach((bar, index) => {
+        const k = Math.min(Math.max((age - index * 0.16) / 0.9, 0), 1)
+        const grow = 1 - Math.pow(1 - k, 3)
+        const height = Math.max(bar.height * grow, 0.001)
+        bar.mesh.scale.y = height
+        bar.mesh.position.y = -1.4 + height / 2
+      })
+      group.rotation.y = -0.5 + Math.sin(seconds * 0.4) * 0.12 + p.x * 0.25
+      group.rotation.x = 0.18 + p.y * 0.1
+    },
+  }
+}
+
+// Faceted crystals that drift and turn (start section, dark surface).
+const buildCrystals = ({ THREE, scene }) => {
+  lights(THREE, scene)
+  const group = new THREE.Group()
+  scene.add(group)
+  const specs = [
+    { geo: new THREE.OctahedronGeometry(1, 0), color: colors.cyan, pos: [-1.5, 0.5, 0], size: 1.05, speed: 0.35 },
+    { geo: new THREE.IcosahedronGeometry(1, 0), color: colors.violet, pos: [1.1, -0.7, -0.6], size: 0.85, speed: -0.28 },
+    { geo: new THREE.TetrahedronGeometry(1, 0), color: colors.mid, pos: [0.7, 1.3, 0.4], size: 0.6, speed: 0.5 },
+    { geo: new THREE.OctahedronGeometry(1, 0), color: colors.cyan, pos: [2.2, 0.2, -1.2], size: 0.32, speed: -0.6 },
+  ]
+  const meshes = specs.map((spec) => {
+    const mesh = new THREE.Mesh(spec.geo, new THREE.MeshStandardMaterial({ color: spec.color, metalness: 0.6, roughness: 0.18, flatShading: true }))
+    mesh.scale.setScalar(spec.size)
+    mesh.add(new THREE.LineSegments(new THREE.EdgesGeometry(spec.geo), new THREE.LineBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.35 })))
+    group.add(mesh)
+    return { mesh, ...spec }
+  })
+  return {
+    update(seconds, p) {
+      meshes.forEach((item, index) => {
+        item.mesh.rotation.set(seconds * item.speed, seconds * item.speed * 0.8 + index, seconds * 0.1)
+        item.mesh.position.set(item.pos[0], item.pos[1] + Math.sin(seconds * 0.8 + index * 1.7) * 0.18, item.pos[2])
+      })
+      group.rotation.y = p.x * 0.4
+      group.rotation.x = p.y * 0.25
+    },
+  }
+}
+
 const scenes = [
   ['[data-orb]', buildOrb, { z: 4.4 }],
   ['[data-gyro]', buildGyro, { z: 6.2 }],
   ['[data-lock]', buildLock, { z: 4.2, fov: 38 }],
+  ['[data-bars]', buildBars, { z: 8, fov: 36 }],
+  ['[data-crystal]', buildCrystals, { z: 6.5 }],
   ['[data-tesseract]', buildTesseract, { z: 9, fov: 40 }],
 ]
 
