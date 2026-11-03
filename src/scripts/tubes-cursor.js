@@ -1,6 +1,8 @@
-// Tubes cursor trail in the hero. This is the real "Tubes Cursor" component from 21st.dev (id 8130, @jod49034),
-// which wraps `threejs-components` (Kevin Levron). Colors follow the KAIROS logo instead of random ones, and a click
-// cycles through the brand palette. It only runs with a fine pointer, on screen, and without reduced motion.
+// Tubes cursor trail across the whole page. This is the real "Tubes Cursor" component from 21st.dev (id 8130,
+// @jod49034), which wraps `threejs-components` (Kevin Levron). It lives in one fixed, full-screen layer above the
+// content (pointer-events: none), so the trail follows the cursor over every section. Colors follow the KAIROS logo
+// instead of random ones, and a click on empty space cycles through the brand palette. It only runs with a fine
+// pointer and full motion, and it is paused while the tab is hidden.
 const host = document.querySelector('[data-tubes]')
 const wanted = host && window.matchMedia('(pointer: fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
@@ -18,13 +20,12 @@ if (wanted) {
   let loading = false
 
   const start = async () => {
-    if (app || loading) return
+    if (app || loading || document.hidden) return
     loading = true
     try {
       const { default: TubesCursor } = await import('threejs-components/build/cursors/tubes1.min.js')
-      const old = host.querySelector('canvas')
       const canvas = document.createElement('canvas')
-      old.replaceWith(canvas)
+      host.querySelector('canvas')?.replaceWith(canvas)
       const palette = palettes[index]
       app = TubesCursor(canvas, { tubes: { colors: palette.tubes, lights: { intensity: 160, colors: palette.lights } } })
       host.classList.add('is-live')
@@ -39,14 +40,14 @@ if (wanted) {
     host.classList.remove('is-live')
   }
 
-  const section = host.closest('section')
-  section.addEventListener('click', (event) => {
-    if (!app || event.target.closest('a, button')) return
+  document.addEventListener('click', (event) => {
+    if (!app || event.target.closest('a, button, input, textarea, select, summary, label')) return
     index = (index + 1) % palettes.length
     app.tubes.setColors(palettes[index].tubes)
     app.tubes.setLightsColors(palettes[index].lights)
   })
-  const begin = () => new IntersectionObserver(([entry]) => (entry.isIntersecting ? start() : stop())).observe(section)
-  if ('requestIdleCallback' in window) requestIdleCallback(begin, { timeout: 2500 })
-  else setTimeout(begin, 1200)
+  document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()))
+
+  if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 2500 })
+  else setTimeout(start, 1200)
 }

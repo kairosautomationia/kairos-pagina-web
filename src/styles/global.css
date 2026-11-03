@@ -482,9 +482,9 @@ p { text-wrap: pretty; }
 @media (max-width: 700px) { .rubik { width: 34vw; top: 8px; right: 4%; } .case-side { justify-items: start; } }
 
 /* 21st.dev ports: tubes cursor (hero), ripple shader (closing), ASCII cube (process) */
-.hero-tubes { position: absolute; z-index: -1; inset: 0; pointer-events: none; mix-blend-mode: screen; }
-.hero-tubes canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s var(--ease-out); }
-.hero-tubes.is-live canvas { opacity: .85; }
+.tubes-layer { position: fixed; z-index: 30; inset: 0; pointer-events: none; mix-blend-mode: screen; }
+.tubes-layer canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s var(--ease-out); }
+.tubes-layer.is-live canvas { opacity: .9; }
 .ripples { position: absolute; z-index: -2; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: .4; }
 .ripples canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s var(--ease-out); }
 .ripples.is-live canvas { opacity: 1; }

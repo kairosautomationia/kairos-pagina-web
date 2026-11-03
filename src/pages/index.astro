@@ -114,7 +114,6 @@ const channels = [
       <section class="hero" id="inicio" aria-labelledby="hero-title">
         <div class="hero-3d" data-hero-3d aria-hidden="true"><canvas></canvas></div>
         <Spotlight id="spot-hero" class="spotlight--hero" fill="#8191e7" />
-        <div class="hero-tubes" data-tubes aria-hidden="true"><canvas></canvas></div>
         <div class="container hero-grid">
           <div class="hero-copy" data-reveal>
             <h1 id="hero-title">Deja de apagar incendios a las 11 de la noche.</h1>
@@ -477,5 +476,6 @@ const channels = [
       navigation?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu))
       window.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu() })
     </script>
+    <div class="tubes-layer" data-tubes aria-hidden="true"><canvas></canvas></div>
   </body>
 </html>
