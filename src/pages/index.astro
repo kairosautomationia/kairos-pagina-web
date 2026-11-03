@@ -69,7 +69,8 @@ const channels = [
     <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" /></noscript>
   </head>
   <body>
     <svg class="sprite" aria-hidden="true" focusable="false">
@@ -284,7 +285,7 @@ const channels = [
             <div class="case-side"><div class="bars" data-bars aria-hidden="true"><canvas></canvas></div><p class="case-metric"><strong><span data-digits="20" data-suffix="+">20+</span></strong><span>horas recuperadas<br />cada semana</span></p></div>
           </div>
           <figure class="case-visual" data-reveal data-tilt="2">
-            <img src="/Documentos/Caso%20de%20exito.jpeg" alt="Caso de éxito de KAIROS con Cake Art: sitio web, automatización y resultados" loading="lazy" width="1600" height="807" />
+            <picture><source srcset="/Documentos/Caso%20de%20exito.webp" type="image/webp" /><img src="/Documentos/Caso%20de%20exito.jpeg" alt="Caso de éxito de KAIROS con Cake Art: sitio web, automatización y resultados" loading="lazy" width="1600" height="807"  decoding="async" /></picture>
           </figure>
         </div>
       </section>
@@ -453,9 +454,18 @@ const channels = [
           device.style.setProperty('--ss', (narrow ? 0.9 + progress * 0.1 : 1.05 - progress * 0.05).toFixed(3))
           if (heading) heading.style.translate = `0 ${(-progress * 60).toFixed(1)}px`
         }
+        let queued = false
+        const queue = () => {
+          if (queued) return
+          queued = true
+          requestAnimationFrame(() => {
+            queued = false
+            settle()
+          })
+        }
         settle()
-        window.addEventListener('scroll', settle, { passive: true })
-        window.addEventListener('resize', settle, { passive: true })
+        window.addEventListener('scroll', queue, { passive: true })
+        window.addEventListener('resize', queue, { passive: true })
       }
 
       const closeMenu = () => {

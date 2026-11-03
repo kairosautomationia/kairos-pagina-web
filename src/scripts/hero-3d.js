@@ -15,7 +15,7 @@ if (host) {
       return
     }
 
-    const small = window.matchMedia('(max-width: 700px)').matches
+    const small = window.matchMedia('(max-width: 700px)').matches || window.matchMedia('(pointer: coarse)').matches || (navigator.hardwareConcurrency || 8) <= 4
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, small ? 1.25 : 1.75))
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50)
@@ -116,9 +116,9 @@ if (host) {
       const wide = camera.aspect > 1.15
       const halfHeight = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z
       const halfWidth = halfHeight * camera.aspect
-      const scale = wide ? Math.min(1.05, (halfWidth * 0.68) / width) : Math.min(0.9, (halfWidth * 1.3) / width)
+      const scale = wide ? Math.min(1.05, (halfWidth * 0.62) / width) : Math.min(0.55, (halfWidth * 1.3) / width)
       world.scale.setScalar(scale)
-      world.position.set(wide ? halfWidth * 0.62 : 0, wide ? 0.1 : halfHeight * 0.5, 0)
+      world.position.set(wide ? halfWidth * 0.67 : 0, wide ? 0.1 : halfHeight * 0.58, 0)
       camera.updateProjectionMatrix()
     }
     resize()

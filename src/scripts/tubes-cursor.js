@@ -48,6 +48,6 @@ if (wanted) {
   })
   document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()))
 
-  if ('requestIdleCallback' in window) requestIdleCallback(start, { timeout: 2500 })
-  else setTimeout(start, 1200)
+  // The bundle is ~760 KB, so it is fetched only once the visitor actually moves the mouse.
+  window.addEventListener('pointermove', () => (document.readyState === 'complete' ? start() : window.addEventListener('load', start, { once: true })), { once: true, passive: true })
 }
