@@ -129,10 +129,7 @@ const channels = [
       </section>
 
       <section class="about" id="nosotros" aria-labelledby="about-title">
-        <div class="ferro" aria-hidden="true">
-          <svg width="0" height="0" class="sprite"><filter id="ferrofluid"><feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 40 -14" result="contrast" /><feComposite in="SourceGraphic" in2="contrast" operator="atop" /><feTurbulence type="fractalNoise" baseFrequency="0.02 0.07" numOctaves="2" result="noise" /><feDisplacementMap in="contrast" in2="noise" scale="36" /></filter></svg>
-          <div class="ferro-field"><span class="globule globule-1"></span><span class="globule globule-2"></span><span class="globule globule-3"></span></div>
-        </div>
+        <div class="orb" data-orb aria-hidden="true"><canvas></canvas></div>
         <div class="container about-grid">
           <p class="section-label" data-reveal>Qué es KAIROS</p>
           <div class="about-copy" data-reveal>
@@ -226,7 +223,7 @@ const channels = [
             {apps.map((app) => (
               <article class="solution-app" data-reveal data-tilt="5">
                 <div class="tape" aria-hidden="true"></div>
-                <svg class="padlock" viewBox="0 0 48 56" aria-hidden="true"><path class="padlock-shackle" d="M14 26V17a10 10 0 0 1 20 0v9" /><rect class="padlock-body" x="6" y="26" width="36" height="26" rx="6" /><circle class="padlock-key" cx="24" cy="38" r="3" /></svg>
+                <div class="lock3d" data-lock aria-hidden="true"><canvas></canvas><svg class="padlock" viewBox="0 0 48 56" aria-hidden="true"><path class="padlock-shackle" d="M14 26V17a10 10 0 0 1 20 0v9" /><rect class="padlock-body" x="6" y="26" width="36" height="26" rx="6" /><circle class="padlock-key" cx="24" cy="38" r="3" /></svg></div>
                 <span class="status status--building"><span class="status-dot" aria-hidden="true"></span>En construcción</span>
                 <h3>{app.name}</h3>
                 <p class="solution-type">{app.type}</p>
@@ -326,7 +323,7 @@ const channels = [
       </section>
 
       <section class="final-cta" aria-labelledby="cta-title">
-        <div class="hero-liquid hero-liquid--cta" data-liquid aria-hidden="true"><canvas></canvas></div>
+        <div class="gyro" data-gyro aria-hidden="true"><canvas></canvas></div>
         <div class="container final-cta-inner" data-reveal>
           <h2 id="cta-title">¿Qué parte de tu negocio te gustaría hacer avanzar?</h2>
           <a class="pill pill-brand" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
@@ -351,9 +348,9 @@ const channels = [
     </footer>
 
     <script>
-      import '../scripts/liquid-hero.js'
       import '../scripts/hero-3d.js'
       import '../scripts/knot-3d.js'
+      import '../scripts/three-scenes.js'
       import '../scripts/tilt.js'
       import '../scripts/wave-lines.js'
       import '../scripts/digits.js'
@@ -385,11 +382,6 @@ const channels = [
         })
       } else {
         revealItems.forEach((item) => item.classList.add('is-visible'))
-      }
-
-      const ferro = document.querySelector('.ferro')
-      if (ferro && 'IntersectionObserver' in window) {
-        new IntersectionObserver(([entry]) => ferro.classList.toggle('is-paused', !entry.isIntersecting)).observe(ferro)
       }
 
       const stage = document.querySelector('.screen-stage')
