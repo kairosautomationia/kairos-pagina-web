@@ -207,28 +207,4 @@ if (hosts.length) {
   }
 
   hosts.forEach(setup)
-
-  // A glass lens you can drag over the hero (same idea as the original demo).
-  document.querySelectorAll('[data-glass-drag]').forEach((lens) => {
-    const bounds = lens.parentElement
-    let start = null
-    lens.addEventListener('pointerdown', (event) => {
-      lens.setPointerCapture(event.pointerId)
-      start = { x: event.clientX - lens.offsetLeft, y: event.clientY - lens.offsetTop }
-      lens.classList.add('is-dragging')
-    })
-    lens.addEventListener('pointermove', (event) => {
-      if (!start) return
-      const maxX = bounds.clientWidth - lens.offsetWidth
-      const maxY = bounds.clientHeight - lens.offsetHeight
-      lens.style.left = `${Math.min(Math.max(event.clientX - start.x, 0), maxX)}px`
-      lens.style.top = `${Math.min(Math.max(event.clientY - start.y, 0), maxY)}px`
-    })
-    const release = () => {
-      start = null
-      lens.classList.remove('is-dragging')
-    }
-    lens.addEventListener('pointerup', release)
-    lens.addEventListener('pointercancel', release)
-  })
 }
