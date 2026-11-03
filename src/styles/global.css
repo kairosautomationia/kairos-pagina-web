@@ -533,3 +533,9 @@ p { text-wrap: pretty; }
 @keyframes beam { to { offset-distance: 100%; } }
 [data-magnetic] { will-change: translate; }
 @media (prefers-reduced-motion: reduce) { .spotlight { animation: none; opacity: 1; } .beam > i { animation: none; } }
+
+/* Neon cursor line behind the contact form */
+.contact { position: relative; overflow: hidden; isolation: isolate; }
+.contact-neon { position: absolute; z-index: -1; inset: 0; pointer-events: none; mix-blend-mode: screen; }
+.contact-neon canvas { display: block; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s var(--ease-out); }
+.contact-neon.is-live canvas { opacity: .9; }
