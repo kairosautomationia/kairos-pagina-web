@@ -1,0 +1,23 @@
+---
+// Spotlight by @manuarora700 (21st.dev, id 989): a blurred ellipse that sweeps in like a stage light.
+// The filter id is per instance so several spotlights can share one page.
+interface Props {
+  id: string
+  fill?: string
+  class?: string
+}
+const { id, fill = '#ffffff', class: className = '' } = Astro.props
+---
+
+<svg class:list={['spotlight', className]} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3787 2842" fill="none" aria-hidden="true">
+  <g filter={`url(#${id})`}>
+    <ellipse cx="1924.71" cy="273.501" rx="1924.71" ry="273.501" transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)" fill={fill} fill-opacity="0.21"></ellipse>
+  </g>
+  <defs>
+    <filter id={id} x="0.860352" y="0.838989" width="3785.16" height="2840.26" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"></feBlend>
+      <feGaussianBlur stdDeviation="151" result="blurred"></feGaussianBlur>
+    </filter>
+  </defs>
+</svg>

@@ -1,7 +1,11 @@
 {
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "kairos-pagina-web",
   "compatibility_date": "2026-10-05",
+  "build": {
+    "command": "pnpm run build"
+  },
   "assets": {
-    "directory": "./"
+    "directory": "./dist"
   }
 }
