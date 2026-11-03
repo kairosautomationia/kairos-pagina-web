@@ -1,6 +1,6 @@
-// 3D hero: a particle sphere wrapped in orbit rings and traveling nodes (Three.js).
-// Concept from "Orbital Sphere Background" by @mengto (21st.dev, id 25503), written from scratch
-// with the KAIROS logo colors. three is loaded on demand so it never blocks the first paint.
+// 3D hero: the KAIROS logo as a volumetric hologram (Three.js). The real logo artwork is stacked in thin layers with
+// depth, so it reads as a solid object when it turns, with a glow behind it and data motes rising around it.
+// three is loaded on demand so it never blocks the first paint.
 const host = document.querySelector('[data-hero-3d]')
 
 if (host) {
@@ -24,105 +24,84 @@ if (host) {
     const cyan = new THREE.Color('#5ad7ee')
     const violet = new THREE.Color('#a86be0')
     const periwinkle = new THREE.Color('#8191e7')
-    const mixed = new THREE.Color()
 
     const world = new THREE.Group()
-    const core = new THREE.Group()
-    world.add(core)
     scene.add(world)
 
-    // Particle shell on a Fibonacci sphere.
-    const count = small ? 1100 : 2600
-    const radius = 2.1
-    const positions = new Float32Array(count * 3)
-    const colors = new Float32Array(count * 3)
-    const sizes = new Float32Array(count)
-    const golden = Math.PI * (3 - Math.sqrt(5))
-    const shell = []
-    for (let i = 0; i < count; i++) {
-      const y = 1 - (i / (count - 1)) * 2
-      const ring = Math.sqrt(1 - y * y)
-      const theta = golden * i
-      const jitter = 1 + (Math.random() - 0.5) * 0.05
-      const x = Math.cos(theta) * ring * radius * jitter
-      const z = Math.sin(theta) * ring * radius * jitter
-      const py = y * radius * jitter
-      positions.set([x, py, z], i * 3)
-      mixed.copy(cyan).lerp(violet, Math.min(1, Math.max(0, (y + 1) / 2 + (Math.random() - 0.5) * 0.25)))
-      colors.set([mixed.r, mixed.g, mixed.b], i * 3)
-      sizes[i] = 0.7 + Math.random() * 1.3
-      if (i % 12 === 0) shell.push(new THREE.Vector3(x, py, z))
-    }
-    const shellGeometry = new THREE.BufferGeometry()
-    shellGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    shellGeometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3))
-    shellGeometry.setAttribute('aSize', new THREE.BufferAttribute(sizes, 1))
-    const shellMaterial = new THREE.ShaderMaterial({
-      transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
-      uniforms: { uTime: { value: 0 }, uPixel: { value: renderer.getPixelRatio() * (small ? 105 : 70) } },
-      vertexShader: `
-        attribute float aSize; attribute vec3 aColor; varying vec3 vColor;
-        uniform float uTime; uniform float uPixel;
-        void main() {
-          vec3 p = position;
-          float wave = sin(p.y * 2.2 + uTime * 0.8) * 0.05 + sin(p.x * 3.0 - uTime * 0.6) * 0.04;
-          p += normalize(position) * wave;
-          vec4 mv = modelViewMatrix * vec4(p, 1.0);
-          gl_PointSize = aSize * uPixel / -mv.z;
-          gl_Position = projectionMatrix * mv;
-          vColor = aColor;
-        }`,
-      fragmentShader: `
-        varying vec3 vColor;
-        void main() {
-          float d = length(gl_PointCoord - 0.5);
-          float a = smoothstep(0.5, 0.0, d);
-          gl_FragColor = vec4(vColor, a * 0.85);
-        }`,
-    })
-    core.add(new THREE.Points(shellGeometry, shellMaterial))
-
-    // Network lines between nearby sampled points.
-    const links = []
-    for (let a = 0; a < shell.length; a++) {
-      for (let b = a + 1; b < shell.length; b++) {
-        if (shell[a].distanceTo(shell[b]) < 0.82) links.push(shell[a], shell[b])
-      }
-    }
-    const linkGeometry = new THREE.BufferGeometry().setFromPoints(links)
-    core.add(new THREE.LineSegments(linkGeometry, new THREE.LineBasicMaterial({ color: periwinkle, transparent: true, opacity: 0.22, depthWrite: false })))
-
-    // Inner wireframe core.
-    const inner = new THREE.LineSegments(
-      new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.15, 1)),
-      new THREE.LineBasicMaterial({ color: cyan, transparent: true, opacity: 0.28, depthWrite: false }),
+    // Soft brand glow behind the logo.
+    const glowCanvas = document.createElement('canvas')
+    glowCanvas.width = glowCanvas.height = 256
+    const glowContext = glowCanvas.getContext('2d')
+    const gradient = glowContext.createRadialGradient(128, 128, 0, 128, 128, 128)
+    gradient.addColorStop(0, 'rgba(129, 145, 231, .55)')
+    gradient.addColorStop(0.45, 'rgba(129, 145, 231, .18)')
+    gradient.addColorStop(1, 'rgba(129, 145, 231, 0)')
+    glowContext.fillStyle = gradient
+    glowContext.fillRect(0, 0, 256, 256)
+    const glow = new THREE.Mesh(
+      new THREE.PlaneGeometry(9, 9),
+      new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(glowCanvas), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }),
     )
-    core.add(inner)
+    glow.position.z = -1.2
+    world.add(glow)
 
-    // Orbit rings with a traveling node each.
-    const orbits = []
-    ;[
-      { r: 2.75, tilt: [1.15, 0.2, 0.0], speed: 0.45, color: cyan },
-      { r: 3.15, tilt: [0.35, 0.0, 0.9], speed: -0.32, color: violet },
-      { r: 3.55, tilt: [-0.7, 0.4, -0.25], speed: 0.22, color: periwinkle },
-    ].forEach((orbit, index) => {
-      const pivot = new THREE.Group()
-      pivot.rotation.set(...orbit.tilt)
-      const points = []
-      for (let i = 0; i <= 160; i++) {
-        const angle = (i / 160) * Math.PI * 2
-        points.push(new THREE.Vector3(Math.cos(angle) * orbit.r, 0, Math.sin(angle) * orbit.r))
+    const logo = new THREE.Group()
+    world.add(logo)
+    const width = 4.3
+    const height = (width * 372) / 432
+    const layers = small ? 14 : 26
+    const depth = 0.62
+    const slices = []
+    const loader = new THREE.TextureLoader()
+    loader.load('/Documentos/Logo%20final.png', (texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace
+      texture.anisotropy = 4
+      for (let i = 0; i < layers; i++) {
+        const t = i / (layers - 1)
+        const front = i === layers - 1
+        const material = new THREE.MeshBasicMaterial({
+          map: texture,
+          transparent: true,
+          alphaTest: 0.04,
+          depthWrite: false,
+          color: front ? '#ffffff' : new THREE.Color().copy(cyan).lerp(violet, t),
+          opacity: front ? 1 : 0.22,
+          blending: front ? THREE.NormalBlending : THREE.AdditiveBlending,
+        })
+        const slice = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material)
+        slice.position.z = (t - 0.5) * depth
+        slice.renderOrder = i
+        logo.add(slice)
+        slices.push(slice)
       }
-      pivot.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), new THREE.LineBasicMaterial({ color: orbit.color, transparent: true, opacity: 0.3, depthWrite: false })))
-      const node = new THREE.Mesh(new THREE.SphereGeometry(0.075, 20, 20), new THREE.MeshBasicMaterial({ color: orbit.color }))
-      const halo = new THREE.Mesh(new THREE.SphereGeometry(0.2, 20, 20), new THREE.MeshBasicMaterial({ color: orbit.color, transparent: true, opacity: 0.16, depthWrite: false }))
-      node.add(halo)
-      pivot.add(node)
-      core.add(pivot)
-      orbits.push({ node, radius: orbit.r, speed: orbit.speed, offset: index * 2.1 })
+      host.classList.add('is-live')
+      if (reducedMotion) render(4)
     })
+
+    // Data motes rising around the logo.
+    const count = small ? 90 : 220
+    const motes = new Float32Array(count * 3)
+    const speeds = new Float32Array(count)
+    const moteColors = new Float32Array(count * 3)
+    const mix = new THREE.Color()
+    for (let i = 0; i < count; i++) {
+      motes.set([(Math.random() - 0.5) * 6.4, (Math.random() - 0.5) * 5.2, (Math.random() - 0.5) * 2.4], i * 3)
+      speeds[i] = 0.12 + Math.random() * 0.34
+      mix.copy(cyan).lerp(violet, Math.random())
+      moteColors.set([mix.r, mix.g, mix.b], i * 3)
+    }
+    const moteGeometry = new THREE.BufferGeometry()
+    moteGeometry.setAttribute('position', new THREE.BufferAttribute(motes, 3))
+    moteGeometry.setAttribute('color', new THREE.BufferAttribute(moteColors, 3))
+    world.add(new THREE.Points(moteGeometry, new THREE.PointsMaterial({ size: small ? 0.085 : 0.06, vertexColors: true, transparent: true, opacity: 0.85, depthWrite: false, blending: THREE.AdditiveBlending })))
+
+    // A thin scan line that sweeps the logo, as if the circuit were being read.
+    const scan = new THREE.Mesh(
+      new THREE.PlaneGeometry(width * 0.9, 0.04),
+      new THREE.MeshBasicMaterial({ color: periwinkle, transparent: true, opacity: 0.0, depthWrite: false, blending: THREE.AdditiveBlending }),
+    )
+    scan.position.z = depth * 0.55
+    logo.add(scan)
 
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 }
     window.addEventListener('pointermove', (event) => {
@@ -131,39 +110,50 @@ if (host) {
     }, { passive: true })
 
     const resize = () => {
-      const { width, height } = host.getBoundingClientRect()
-      renderer.setSize(width, height, false)
-      camera.aspect = width / Math.max(height, 1)
+      const { width: boxWidth, height: boxHeight } = host.getBoundingClientRect()
+      renderer.setSize(boxWidth, boxHeight, false)
+      camera.aspect = boxWidth / Math.max(boxHeight, 1)
       const wide = camera.aspect > 1.15
       const halfHeight = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z
       const halfWidth = halfHeight * camera.aspect
-      const scale = wide ? 0.84 : 0.58
+      const scale = wide ? Math.min(1.05, (halfWidth * 0.68) / width) : Math.min(0.9, (halfWidth * 1.3) / width)
       world.scale.setScalar(scale)
-      world.position.set(wide ? Math.min(halfWidth - 2.3 * scale, halfWidth * 0.55) : 0, wide ? 0.3 : halfHeight * 0.5, 0)
+      world.position.set(wide ? halfWidth * 0.62 : 0, wide ? 0.1 : halfHeight * 0.5, 0)
       camera.updateProjectionMatrix()
     }
     resize()
     new ResizeObserver(resize).observe(host)
 
-    const render = (seconds) => {
-      shellMaterial.uniforms.uTime.value = seconds
+    function render(seconds) {
       pointer.x += (pointer.tx - pointer.x) * 0.05
       pointer.y += (pointer.ty - pointer.y) * 0.05
       const scroll = Math.min(window.scrollY / Math.max(window.innerHeight, 1), 1)
-      core.rotation.y = seconds * 0.12 + pointer.x * 0.5 + scroll * 1.2
-      core.rotation.x = pointer.y * 0.28 + scroll * 0.4
-      inner.rotation.y = -seconds * 0.25
-      inner.rotation.z = seconds * 0.1
-      orbits.forEach((orbit) => {
-        const angle = seconds * orbit.speed + orbit.offset
-        orbit.node.position.set(Math.cos(angle) * orbit.radius, 0, Math.sin(angle) * orbit.radius)
+      logo.rotation.y = Math.sin(seconds * 0.45) * 0.28 + pointer.x * 0.5 + scroll * 0.9
+      logo.rotation.x = Math.cos(seconds * 0.35) * 0.08 + pointer.y * 0.28
+      logo.position.y = Math.sin(seconds * 0.8) * 0.1
+      glow.material.opacity = 0.85 + Math.sin(seconds * 0.9) * 0.15
+
+      // Layers breathe apart slightly so the depth is visible while it floats.
+      const spread = 1 + Math.sin(seconds * 0.7) * 0.08
+      slices.forEach((slice, index) => {
+        slice.position.z = (index / (layers - 1) - 0.5) * depth * spread
       })
+
+      const sweep = (seconds * 0.32) % 1.6
+      scan.position.y = (0.5 - sweep / 1.0) * height * 1.0
+      scan.material.opacity = sweep < 1 ? 0.3 * Math.sin(Math.PI * sweep) : 0
+
+      for (let i = 0; i < count; i++) {
+        let y = motes[i * 3 + 1] + speeds[i] * 0.016
+        if (y > 2.8) y = -2.8
+        motes[i * 3 + 1] = y
+        motes[i * 3] += Math.sin(seconds * 0.6 + i) * 0.0008
+      }
+      moteGeometry.attributes.position.needsUpdate = true
       renderer.render(scene, camera)
     }
 
-    host.classList.add('is-live')
     if (reducedMotion) {
-      render(4)
       new ResizeObserver(() => render(4)).observe(host)
       return
     }
@@ -187,6 +177,7 @@ if (host) {
       visible ? run() : stop()
     }).observe(host)
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : run()))
+    host.classList.add('is-live')
     run()
   }
 
