@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "project": {
+    "name": "kairos-lab-web",
+    "productType": null,
+    "stack": [
+      "astro"
+    ]
+  },
+  "sources": {
+    "tokens": [],
+    "components": [],
+    "assets": [],
+    "instructions": []
+  },
+  "design": {
+    "colorMode": "unknown",
+    "colors": {},
+    "typography": {},
+    "spacing": {},
+    "radius": {},
+    "shadows": {},
+    "motion": {},
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [],
+  "evidence": [
+    {
+      "fact": "project.stack:astro",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-11-03T05:50:21.056Z"
+}

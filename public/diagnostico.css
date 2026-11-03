@@ -1,15 +1,64 @@
 /* ========================================
    DIAGNÓSTICO KAIROS - Estilos de la encuesta
-   Hereda variables de styles.css (paleta morado/cian, fondo oscuro)
+   Self-contained: same tokens as the landing (src/styles/global.css).
+   The old styles.css no longer exists, so everything the page used from it lives here.
    ======================================== */
+:root {
+    --color-bg-dark: #090b12;
+    --color-bg-card: #0e111a;
+    --color-cian: #5ad7ee;
+    --color-cian-claro: #5ad7ee;
+    --color-morado: #8191e7;
+    --color-morado-claro: #8191e7;
+    --color-text-primary: #e9ecf4;
+    --color-text-secondary: #9aa2b6;
+    --color-text-muted: #6f778b;
+    --gradient-main: linear-gradient(90deg, #5ad7ee, #8191e7);
+    --gradient-glow: radial-gradient(ellipse at 50% 0%, rgba(129, 145, 231, .1), transparent 60%);
+    --border-radius: 12px;
+    --border-radius-lg: 20px;
+    --transition: .2s ease;
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--color-bg-dark); }
+body::before { position: fixed; z-index: -1; inset: 0; background: radial-gradient(55% 45% at 85% 0%, rgba(90, 215, 238, .1), transparent 70%), radial-gradient(50% 45% at 0% 100%, rgba(168, 107, 224, .1), transparent 70%), radial-gradient(rgba(233, 236, 244, .08) 1px, transparent 1.2px) 0 0 / 30px 30px; content: ''; pointer-events: none; }
+body { margin: 0; font-family: 'DM Sans', sans-serif; color: var(--color-text-primary); background: var(--color-bg-dark); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: 'Manrope', sans-serif; text-wrap: balance; }
+:focus-visible { outline: 2px solid var(--color-cian); outline-offset: 3px; }
+.container { width: min(820px, calc(100% - 44px)); margin-inline: auto; }
+.navbar { position: sticky; top: 0; z-index: 20; }
+.nav-container { display: flex; min-height: 76px; align-items: center; justify-content: space-between; width: min(1160px, calc(100% - 44px)); margin-inline: auto; }
+.nav-logo { display: inline-flex; align-items: center; gap: 10px; }
+.logo-image { width: 44px; height: 44px; object-fit: contain; }
+.logo-text-brand { font: 700 15px/1 'Manrope', sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+.btn { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 0 22px; border: 1px solid transparent; border-radius: 999px; font: 600 14px/1 'DM Sans', sans-serif; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, transform .16s ease; }
+.btn:active:not(:disabled) { transform: scale(.97); }
+.btn-primary { background: var(--color-text-primary); color: var(--color-bg-dark); }
+.btn-secondary { border-color: rgba(233, 236, 244, .26); background: transparent; color: var(--color-text-primary); }
+.btn-large { min-height: 54px; padding-inline: 28px; font-size: 15px; }
+@media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover:not(:disabled) { background: #fff; }
+    .btn-secondary:hover:not(:disabled) { border-color: rgba(233, 236, 244, .5); }
+}
+.section-tag { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px; border: 1px solid rgba(233, 236, 244, .2); border-radius: 999px; color: var(--color-text-secondary); font-size: 12px; font-weight: 600; }
+.section-title { font-size: clamp(28px, 4vw, 40px); line-height: 1.12; letter-spacing: -.035em; }
+.gradient-text { color: var(--color-cian); }
+.footer { border-top: 1px solid rgba(233, 236, 244, .12); }
+.footer-bottom { display: flex; justify-content: space-between; gap: 16px; padding-block: 22px; color: var(--color-text-muted); font-size: 12px; }
+@media (prefers-reduced-motion: reduce) { * { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
 
 .diag-body {
-    background: var(--color-bg-dark);
+    background: transparent;
 }
 
 /* --- Navbar simplificada --- */
 .diag-navbar {
-    background: rgba(15, 15, 26, 0.85);
+    background: rgba(9, 11, 18, .82);
     border-bottom: 1px solid rgba(255,255,255,0.06);
     backdrop-filter: blur(10px);
 }
@@ -42,7 +91,7 @@
 .diag-hero {
     padding: 8.5rem 0 3rem;
     text-align: center;
-    background: radial-gradient(ellipse at top, rgba(168,85,247,0.15) 0%, transparent 60%);
+    background: radial-gradient(ellipse at top, rgba(161,144,243,0.15) 0%, transparent 60%);
 }
 
 .diag-hero-title {
@@ -95,17 +144,18 @@
 
 /* --- Progreso --- */
 .diag-main {
-    padding: 130px 0 5rem;
+    padding: 32px 0 5rem;
     max-width: 720px;
 }
 
 .diag-progress-wrap {
     position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(15,15,26,0.92);
-    backdrop-filter: blur(8px);
-    padding: 0.85rem 0;
+    top: 76px;
+    z-index: 15;
+    background: rgba(10,10,24,.7);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
     margin-bottom: 2rem;
 }
 
@@ -166,7 +216,7 @@
     align-items: center;
     justify-content: center;
     background: var(--gradient-glow);
-    border: 1px solid rgba(168,85,247,0.25);
+    border: 1px solid rgba(161,144,243,0.25);
     font-size: 1.2rem;
     color: var(--color-cian-claro);
 }
@@ -286,7 +336,7 @@
 }
 
 .diag-choice-option label:hover {
-    border-color: rgba(6,182,212,0.4);
+    border-color: rgba(114,229,246,0.4);
 }
 
 .diag-choice-option input:checked + label {
@@ -435,7 +485,7 @@
 }
 
 .diag-option label:hover {
-    border-color: rgba(6,182,212,0.4);
+    border-color: rgba(114,229,246,0.4);
 }
 
 .diag-option input:checked + label {
@@ -668,14 +718,14 @@
     vertical-align: middle;
 }
 
-.diag-usecase-tag.alta { background: rgba(6,182,212,0.18); color: var(--color-cian-claro); }
-.diag-usecase-tag.media { background: rgba(168,85,247,0.18); color: var(--color-morado-claro); }
+.diag-usecase-tag.alta { background: rgba(114,229,246,0.18); color: var(--color-cian-claro); }
+.diag-usecase-tag.media { background: rgba(161,144,243,0.18); color: var(--color-morado-claro); }
 .diag-usecase-tag.baja { background: rgba(255,255,255,0.08); color: var(--color-text-muted); }
 
 .diag-cta-box {
     text-align: center;
     background: var(--gradient-glow);
-    border: 1px solid rgba(168,85,247,0.25);
+    border: 1px solid rgba(161,144,243,0.25);
     border-radius: var(--border-radius-lg);
     padding: 2.5rem 1.5rem;
     margin-bottom: 1.5rem;

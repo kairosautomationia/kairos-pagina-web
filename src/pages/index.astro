@@ -2,15 +2,55 @@
 import '../styles/global.css'
 
 const bookingUrl = 'https://cal.com/kairos-buppna/kairos-lab-de-ia'
-const services = [
-  { number: '01', name: 'KAIROS Solution', type: 'Diagnóstico e implementación', state: 'Disponible', kind: 'active' },
-  { number: '02', name: 'KÁMIRA', type: 'Aplicación propia', state: 'En construcción', kind: 'building' },
-  { number: '03', name: 'IONDU', type: 'Aplicación propia', state: 'En construcción', kind: 'building' },
+const whatsappNumber = '593998730180'
+
+const capabilities = [
+  { icon: 'code', title: 'Agencia de software', description: 'Páginas, aplicaciones y sistemas a la medida del trabajo real de tu empresa.' },
+  { icon: 'search', title: 'Consultoría de procesos', description: 'Mapeamos cómo trabajas hoy y encontramos qué conviene resolver primero.' },
+  { icon: 'bot', title: 'Laboratorio de IA', description: 'Probamos, medimos y llevamos la inteligencia artificial a tu operación, sin humo.' },
+  { icon: 'workflow', title: 'Automatización', description: 'Conectamos WhatsApp, correo, hojas y sistemas para que lo repetitivo se haga solo.' },
 ]
-const process = [
-  { number: '01', title: 'Analizamos tu empresa', description: 'Entendemos tus procesos y ubicamos las oportunidades.' },
-  { number: '02', title: 'Definimos la solución', description: 'Elegimos el camino adecuado para el problema real.' },
-  { number: '03', title: 'Sistematizamos contigo', description: 'Integramos la solución en tu operación.' },
+const panelRows = [
+  { text: 'Factura 1042 conciliada', state: 'Automático', kind: 'auto' },
+  { text: 'Pedido recibido por WhatsApp', state: 'Automático', kind: 'auto' },
+  { text: 'Cotización para cliente nuevo', state: 'Espera su aprobación', kind: 'review' },
+  { text: 'Reclamo de un cliente', state: 'Necesita a su equipo', kind: 'human' },
+]
+const control = [
+  { icon: 'shield', title: 'Usted decide qué se aprueba', description: 'Lo importante pasa por una persona antes de salir.' },
+  { icon: 'list', title: 'Todo queda registrado', description: 'Cada acción tiene fecha, origen y responsable.' },
+  { icon: 'lock', title: 'Sus datos son suyos', description: 'Definimos contigo quién accede a qué.' },
+]
+const apps = [
+  { name: 'KÁMIRA', type: 'Aplicación propia' },
+  { name: 'IONDU', type: 'Aplicación propia' },
+]
+const steps = [
+  { number: '01', title: 'Diagnóstico', description: 'Entendemos tus procesos y ubicamos dónde se pierde tiempo.' },
+  { number: '02', title: 'Diseño', description: 'Elegimos el camino adecuado para el problema real.' },
+  { number: '03', title: 'Implementación', description: 'Construimos e integramos la solución en tu operación.' },
+  { number: '04', title: 'Acompañamiento', description: 'Medimos, ajustamos y te dejamos el control.' },
+]
+const starts = [
+  { icon: 'calendar', title: 'Agenda un diagnóstico', description: 'Una conversación para ubicar el problema.', cta: 'Elegir horario', href: bookingUrl, external: true },
+  { icon: 'chat', title: 'Escríbenos por WhatsApp', description: 'Cuéntanos qué te quita tiempo y te respondemos.', cta: 'Abrir WhatsApp', href: `https://wa.me/${whatsappNumber}`, external: true },
+  { icon: 'gauge', title: 'Haz el diagnóstico en línea', description: 'Responde unas preguntas y recibe una primera lectura.', cta: 'Empezar ahora', href: '/diagnostico.html', external: false },
+]
+const faqs = [
+  { q: '¿Qué es el diagnóstico?', a: 'Es una conversación para entender cómo trabaja tu empresa y ubicar dónde se pierde tiempo o se cometen errores. Al terminar sabemos qué conviene resolver primero.' },
+  { q: '¿Necesito saber de tecnología?', a: 'No. Nosotros traducimos el problema de tu operación a una solución y te explicamos cada paso con palabras simples.' },
+  { q: '¿La IA toma decisiones por mi empresa?', a: 'No. La IA prepara, ordena y sugiere. Usted define qué decisiones requieren aprobación humana antes de ejecutarse.' },
+  { q: '¿Con qué herramientas se integra?', a: 'Con las que ya usas: WhatsApp, correo, hojas de cálculo y sistemas de gestión. Lo confirmamos en el diagnóstico.' },
+  { q: '¿Qué pasa con mis datos?', a: 'Son tuyos. Acordamos desde el inicio qué información se usa, quién puede verla y dónde se guarda.' },
+  { q: '¿Dónde están y cómo empezamos?', a: 'Estamos en Ambato, Ecuador. Agenda un diagnóstico o escríbenos y vemos cómo trabajar contigo.' },
+]
+const channels = [
+  { label: 'WhatsApp', href: `https://wa.me/${whatsappNumber}` },
+  { label: 'Instagram', href: 'https://www.instagram.com/kairos.automation.lab' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/kairos%E2%94%82automation-ia/posts/?feedView=all' },
+  { label: 'TikTok', href: 'https://www.tiktok.com/@kairos.ia.lab?is_from_webapp=1&sender_device=pc' },
+  { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61587941937125&locale=es_LA' },
+  { label: 'Correo', href: 'mailto:kairosautomation.ia@gmail.com' },
 ]
 ---
 
@@ -19,8 +59,8 @@ const process = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#080a0f" />
-    <meta name="description" content="KAIROS es un lab de IA que ayuda a empresas a identificar y resolver procesos que consumen tiempo, generan errores o limitan su crecimiento." />
+    <meta name="theme-color" content="#090b12" />
+    <meta name="description" content="KAIROS es una agencia de software, consultoría y laboratorio de IA que ayuda a empresas a identificar y resolver procesos que consumen tiempo, generan errores o limitan su crecimiento." />
     <title>KAIROS | Lab de IA</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
     <link rel="icon" href="/favicon.ico?v=3" sizes="any" />
@@ -31,6 +71,23 @@ const process = [
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+      <symbol id="i-bot" viewBox="0 0 24 24"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></symbol>
+      <symbol id="i-workflow" viewBox="0 0 24 24"><rect width="8" height="8" x="3" y="3" rx="2"/><path d="M7 11v4a2 2 0 0 0 2 2h4"/><rect width="8" height="8" x="13" y="13" rx="2"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+      <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+      <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+      <symbol id="i-trend" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+    </svg>
+
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <header class="site-header">
       <div class="container header-inner">
@@ -46,122 +103,233 @@ const process = [
           <a href="#soluciones">Soluciones</a>
           <a href="#proceso">Proceso</a>
           <a href="#caso">Caso de éxito</a>
-          <a class="pill pill-light nav-cta" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar diagnóstico <span aria-hidden="true">↗</span></a>
+          <a href="#contacto">Contacto</a>
+          <a class="pill pill-brand nav-cta" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </nav>
       </div>
     </header>
 
     <main id="contenido">
       <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-3d" data-hero-3d aria-hidden="true"><canvas></canvas></div>
         <div class="container hero-grid">
           <div class="hero-copy" data-reveal>
-            <p class="eyebrow"><span class="eyebrow-dot"></span> LAB DE IA · AMBATO, ECUADOR</p>
-            <h1 id="hero-title">Deja de apagar incendios a las <span>11 de la noche.</span></h1>
+            <h1 id="hero-title">Deja de apagar incendios a las 11 de la noche.</h1>
             <p class="hero-lede">KAIROS es un lab de IA que convierte problemas de tu operación en soluciones.</p>
             <div class="hero-actions">
-              <a class="pill pill-teal" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <span class="pill-arrow" aria-hidden="true">↗</span></a>
+              <a class="pill pill-brand" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
               <a class="quiet-link" href="#soluciones">Conocer las soluciones <span aria-hidden="true">↓</span></a>
             </div>
-            <p class="hero-note">Inteligencia artificial y automatización, aplicadas al trabajo real.</p>
           </div>
-          <div class="hero-brand-mark" aria-hidden="true" data-reveal>
-            <span class="hero-mark-orbit hero-mark-orbit--outer"></span>
-            <span class="hero-mark-orbit hero-mark-orbit--inner"></span>
-            <span class="hero-mark-glow"></span>
-            <img src="/Documentos/fondo%20definitivo.png" alt="" width="400" height="360" fetchpriority="high" />
-            <div class="hero-brand-meta"><span>KAIROS</span><span>AUTOMATION · IA</span></div>
-          </div>
+        </div>
+        <div class="container hero-meta">
+          <span>Agencia de software · Consultoría · Laboratorio de IA</span>
+          <span>Ambato, Ecuador</span>
         </div>
       </section>
 
-      <section class="solution-explorer" id="explora" aria-labelledby="explorer-title">
-        <div class="explorer-scene" id="solution-halo" aria-hidden="true"></div>
-        <div class="explorer-shade" aria-hidden="true"></div>
-        <div class="container explorer-content" data-reveal>
-          <p class="eyebrow"><span class="eyebrow-dot"></span> KAIROS · LAB DE IA</p>
-          <h2 id="explorer-title">Explora tu <span>futura solución.</span></h2>
-          <p>Cada operación es distinta. El primer paso es descubrir qué puede cambiar en la tuya.</p>
-          <a class="pill pill-light" href={bookingUrl} target="_blank" rel="noopener noreferrer">Empezar con un diagnóstico <span aria-hidden="true">↗</span></a>
+      <section class="about" id="nosotros" aria-labelledby="about-title">
+        <div class="ferro" aria-hidden="true">
+          <svg width="0" height="0" class="sprite"><filter id="ferrofluid"><feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 40 -14" result="contrast" /><feComposite in="SourceGraphic" in2="contrast" operator="atop" /><feTurbulence type="fractalNoise" baseFrequency="0.02 0.07" numOctaves="2" result="noise" /><feDisplacementMap in="contrast" in2="noise" scale="36" /></filter></svg>
+          <div class="ferro-field"><span class="globule globule-1"></span><span class="globule globule-2"></span><span class="globule globule-3"></span></div>
         </div>
-        <span class="explorer-index" aria-hidden="true">01 — DESCUBRIR · 02 — DISEÑAR · 03 — TRANSFORMAR</span>
-      </section>
-
-      <section class="about section-surface" id="nosotros" aria-labelledby="about-title">
         <div class="container about-grid">
-          <p class="eyebrow section-eyebrow" data-reveal>QUÉ ES KAIROS</p>
+          <p class="section-label" data-reveal>Qué es KAIROS</p>
           <div class="about-copy" data-reveal>
-            <h2 id="about-title">Un lab de IA que convierte <span>problemas en soluciones.</span></h2>
+            <h2 id="about-title">Un lab de IA que convierte problemas en soluciones.</h2>
             <p>Ayudamos a empresas a identificar, sistematizar y resolver procesos que consumen tiempo, generan errores o limitan su crecimiento.</p>
             <p class="about-principle">No empezamos por la tecnología. <strong>Empezamos por el problema.</strong></p>
           </div>
         </div>
+        <div class="container capability-grid">
+          {capabilities.map((item) => (
+            <article class="capability" data-reveal data-tilt="7">
+              <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href={`#i-${item.icon}`}/></svg></span>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
-      <section class="solutions section-surface" id="soluciones" aria-labelledby="solutions-title">
+      <section class="screen" id="pantalla" aria-labelledby="screen-title">
         <div class="container">
           <div class="section-heading" data-reveal>
-            <p class="eyebrow section-eyebrow">QUÉ HACEMOS</p>
+            <p class="section-label">Una sola pantalla</p>
+            <h2 id="screen-title">Vea su operación completa en un solo lugar.</h2>
+            <p>Cada pedido, tarea y seguimiento queda conectado. Usted ve qué avanzó, qué espera su aprobación y qué necesita a una persona.</p>
+          </div>
+          <div class="screen-stage" data-reveal>
+            <div class="panel" data-tilt="3" role="img" aria-label="Ejemplo de un panel de operación con tareas automáticas, aprobaciones pendientes y alertas para el equipo">
+              <div class="panel-top"><strong>Hoy · Operación</strong><span class="sample-tag">Datos de ejemplo</span></div>
+              <div class="panel-stats">
+                <div><span>Tareas automáticas</span><strong>128</strong></div>
+                <div><span>Esperan aprobación</span><strong>3</strong></div>
+                <div><span>Horas recuperadas</span><strong>21</strong></div>
+              </div>
+              <ul class="panel-rows">
+                {panelRows.map((row) => (
+                  <li><span>{row.text}</span><span class={`chip chip--${row.kind}`}>{row.state}</span></li>
+                ))}
+              </ul>
+            </div>
+            <div class="chat" data-tilt="5" role="img" aria-label="Ejemplo de conversación: un cliente pide una cotización y el asistente la prepara para aprobación del equipo">
+              <div class="chat-top"><span class="chat-dot"></span><strong>Asistente KAIROS</strong><span class="sample-tag">Ejemplo</span></div>
+              <p class="bubble bubble--in">Hola, ¿pueden enviarme una cotización?</p>
+              <p class="bubble bubble--out">Claro. La preparo ahora y su equipo la aprueba antes de enviarla.</p>
+              <p class="bubble bubble--note"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Enviada a aprobación</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="control" id="control" aria-labelledby="control-title">
+        <div class="knot" data-knot aria-hidden="true"><canvas></canvas></div>
+        <div class="container control-grid">
+          <div class="control-copy" data-reveal>
+            <p class="section-label">Usted tiene el control</p>
+            <h2 id="control-title">Usted mantiene el control. Y sus ventas avanzan.</h2>
+            <p>Responder a tiempo, dar seguimiento y no perder al cliente que escribió a las 11 de la noche. La IA hace lo repetitivo; usted decide lo importante.</p>
+            <ul class="control-list">
+              {control.map((item) => (
+                <li>
+                  <span class="icon-tile icon-tile--small"><svg class="icon" aria-hidden="true"><use href={`#i-${item.icon}`}/></svg></span>
+                  <div><h3>{item.title}</h3><p>{item.description}</p></div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="goals" data-reveal data-tilt="4">
+            <p class="goals-label">Lo que buscamos en cada diagnóstico</p>
+            <div class="goal"><strong class="goal-number"><span data-digits="20" data-suffix="+">20+</span></strong><span>horas por semana recuperadas en tareas repetitivas</span></div>
+            <div class="goal"><strong class="goal-number">24/7</strong><span>primera respuesta a quienes te escriben</span></div>
+            <div class="goal"><strong class="goal-number"><span data-digits="100" data-suffix="%">100%</span></strong><span>de las decisiones importantes con aprobación humana</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="solutions" id="soluciones" aria-labelledby="solutions-title">
+        <div class="container">
+          <div class="section-heading" data-reveal>
+            <p class="section-label">Qué hacemos</p>
             <h2 id="solutions-title">Soluciones KAIROS</h2>
             <p>El diagnóstico nos ayuda a elegir el camino adecuado para cada empresa.</p>
           </div>
-          <div class="solution-list">
-            {services.map((service) => (
-              <article class="solution-row" data-reveal>
-                <span class="solution-number">{service.number}</span>
-                <div class="solution-name">
-                  <h3>{service.name}</h3>
-                  <p>{service.type}</p>
-                </div>
-                <span class:list={["solution-state", `solution-state--${service.kind}`]}>
-                  <span class="state-dot" aria-hidden="true"></span>{service.state}
-                </span>
-                {service.kind === 'active' && <a class="solution-action" href={bookingUrl} target="_blank" rel="noopener noreferrer" aria-label="Agendar diagnóstico con KAIROS Solution"><span aria-hidden="true">↗</span></a>}
-                {service.kind === 'building' && <span class="solution-action solution-action--empty" aria-hidden="true">—</span>}
+          <div class="solution-grid">
+            <article class="solution-feature" data-reveal data-tilt="4">
+              <span class="status status--active"><span class="status-dot" aria-hidden="true"></span>Disponible</span>
+              <h3>KAIROS Solution</h3>
+              <p class="solution-type">Diagnóstico e implementación</p>
+              <p class="solution-copy">Analizamos tu operación, definimos la solución adecuada y la integramos contigo.</p>
+              <a class="pill pill-brand" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+            </article>
+            {apps.map((app) => (
+              <article class="solution-app" data-reveal data-tilt="5">
+                <div class="tape" aria-hidden="true"></div>
+                <svg class="padlock" viewBox="0 0 48 56" aria-hidden="true"><path class="padlock-shackle" d="M14 26V17a10 10 0 0 1 20 0v9" /><rect class="padlock-body" x="6" y="26" width="36" height="26" rx="6" /><circle class="padlock-key" cx="24" cy="38" r="3" /></svg>
+                <span class="status status--building"><span class="status-dot" aria-hidden="true"></span>En construcción</span>
+                <h3>{app.name}</h3>
+                <p class="solution-type">{app.type}</p>
               </article>
             ))}
           </div>
-          <p class="solutions-note" data-reveal><span aria-hidden="true">*</span> KÁMIRA e IONDU están en construcción.</p>
         </div>
       </section>
 
-      <section class="process-section section-surface" id="proceso" aria-labelledby="process-title">
+      <section class="process" id="proceso" aria-labelledby="process-title">
+        <canvas class="wave-canvas" data-wave data-lines="26" data-amplitude="24" aria-hidden="true"></canvas>
         <div class="container">
-          <div class="section-heading section-heading--compact" data-reveal>
-            <p class="eyebrow section-eyebrow">CÓMO TRABAJAMOS</p>
-            <h2 id="process-title">Del diagnóstico a la solución.</h2>
+          <div class="section-heading section-heading--single" data-reveal>
+            <p class="section-label">Cómo trabajamos</p>
+            <h2 id="process-title">Del diagnóstico a la solución, en cuatro pasos.</h2>
           </div>
-          <div class="process-list">
-            {process.map((step) => (
-              <article class="process-row" data-reveal>
+          <ol class="process-list">
+            {steps.map((step) => (
+              <li class="process-step" data-reveal>
                 <span class="process-number">{step.number}</span>
                 <h3>{step.title}</h3>
                 <p>{step.description}</p>
-              </article>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      <section class="case-study section-surface" id="caso" aria-labelledby="case-title">
-        <div class="container case-grid">
-          <div class="case-copy" data-reveal>
-            <p class="eyebrow section-eyebrow">CASO DE ÉXITO · 01</p>
-            <p class="case-client">CAKE ART · ECUADOR</p>
-            <h2 id="case-title">Más tiempo para hacer crecer el negocio.</h2>
-            <p>Cake Art recuperó tiempo al sistematizar parte de su operación.</p>
-            <div class="case-metric"><strong>20+</strong><span>horas recuperadas<br />cada semana</span></div>
+      <section class="case-study" id="caso" aria-labelledby="case-title">
+        <div class="container">
+          <div class="case-head" data-reveal>
+            <div>
+              <p class="section-label">Caso de éxito</p>
+              <h2 id="case-title">Más tiempo para hacer crecer el negocio.</h2>
+              <p class="case-text">Cake Art, Ecuador, recuperó tiempo al sistematizar parte de su operación.</p>
+            </div>
+            <p class="case-metric"><strong><span data-digits="20" data-suffix="+">20+</span></strong><span>horas recuperadas<br />cada semana</span></p>
           </div>
-          <figure class="case-visual" data-reveal>
-            <img src="/Documentos/Caso%20de%20exito.jpeg" alt="Caso de éxito de KAIROS con Cake Art: sitio web, automatización y resultados" loading="lazy" width="1600" height="800" />
+          <figure class="case-visual" data-reveal data-tilt="2">
+            <img src="/Documentos/Caso%20de%20exito.jpeg" alt="Caso de éxito de KAIROS con Cake Art: sitio web, automatización y resultados" loading="lazy" width="1600" height="807" />
           </figure>
         </div>
       </section>
 
+      <section class="start" id="empezar" aria-labelledby="start-title">
+        <div class="container">
+          <div class="section-heading section-heading--single" data-reveal>
+            <p class="section-label">Empezar</p>
+            <h2 id="start-title">Elige cómo quieres empezar.</h2>
+          </div>
+          <div class="start-grid">
+            {starts.map((item) => (
+              <a class="start-card" data-tilt="6" href={item.href} target={item.external ? '_blank' : undefined} rel={item.external ? 'noopener noreferrer' : undefined} data-reveal>
+                <span class="icon-tile"><svg class="icon" aria-hidden="true"><use href={`#i-${item.icon}`}/></svg></span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+                <span class="start-cta">{item.cta} <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contacto" aria-labelledby="contact-title">
+        <div class="container contact-grid">
+          <div class="contact-copy" data-reveal>
+            <p class="section-label">Contacto</p>
+            <h2 id="contact-title">Cuéntanos qué te quita tiempo.</h2>
+            <p>Escribe tu caso y lo recibimos por WhatsApp con el mensaje ya listo. Te respondemos con los siguientes pasos.</p>
+          </div>
+          <form class="contact-form" data-contact-form data-whatsapp={whatsappNumber} novalidate data-reveal>
+            <div class="field"><label for="f-nombre">Nombre</label><input id="f-nombre" name="nombre" data-field required autocomplete="name" /><p class="field-error" role="alert"></p></div>
+            <div class="field"><label for="f-empresa">Empresa <span>(opcional)</span></label><input id="f-empresa" name="empresa" data-field autocomplete="organization" /><p class="field-error"></p></div>
+            <div class="field"><label for="f-contacto">Tu WhatsApp</label><input id="f-contacto" name="contacto" data-field required inputmode="tel" autocomplete="tel" /><p class="field-error" role="alert"></p></div>
+            <div class="field"><label for="f-problema">¿Qué proceso te quita más tiempo?</label><textarea id="f-problema" name="problema" data-field required rows="4"></textarea><p class="field-error" role="alert"></p></div>
+            <button class="pill pill-brand" type="submit">Enviar por WhatsApp <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+            <p class="form-status" data-form-status role="status"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="faq" id="preguntas" aria-labelledby="faq-title">
+        <div class="container faq-grid">
+          <div class="faq-head" data-reveal>
+            <p class="section-label">Preguntas frecuentes</p>
+            <h2 id="faq-title">Lo que suelen preguntarnos.</h2>
+          </div>
+          <div class="faq-list" data-reveal>
+            {faqs.map((item) => (
+              <details>
+                <summary>{item.q}<svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section class="final-cta" aria-labelledby="cta-title">
+        <div class="hero-liquid hero-liquid--cta" data-liquid aria-hidden="true"><canvas></canvas></div>
         <div class="container final-cta-inner" data-reveal>
-          <p class="eyebrow">EL SIGUIENTE PASO</p>
           <h2 id="cta-title">¿Qué parte de tu negocio te gustaría hacer avanzar?</h2>
-          <a class="pill pill-light" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <span class="pill-arrow" aria-hidden="true">↗</span></a>
+          <a class="pill pill-brand" href={bookingUrl} target="_blank" rel="noopener noreferrer">Agendar un diagnóstico <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
       </section>
     </main>
@@ -172,61 +340,35 @@ const process = [
           <img src="/Documentos/Logo%20final.png" alt="" width="46" height="42" loading="lazy" />
           <span class="brand-copy"><strong>KAIROS</strong><small>AUTOMATION · IA</small></span>
         </a>
-        <p>Un lab de IA que convierte problemas en soluciones.</p>
-        <div class="footer-links" aria-label="Canales de contacto">
-          <a href="https://wa.me/593998730180" target="_blank" rel="noopener noreferrer">WhatsApp <span aria-hidden="true">↗</span></a>
-          <a href="https://www.facebook.com/profile.php?id=61587941937125&locale=es_LA" target="_blank" rel="noopener noreferrer">Facebook <span aria-hidden="true">↗</span></a>
-          <a href="https://www.linkedin.com/company/kairos%E2%94%82automation-ia/posts/?feedView=all" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a>
-          <a href="https://www.tiktok.com/@kairos.ia.lab?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer">TikTok <span aria-hidden="true">↗</span></a>
-          <a href="https://www.instagram.com/kairos.automation.lab" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a>
-          <a href="mailto:kairosautomation.ia@gmail.com">Correo <span aria-hidden="true">↗</span></a>
-        </div>
+        <p>Agencia de software, consultoría y laboratorio de IA.</p>
+        <ul class="footer-links" aria-label="Canales de contacto">
+          {channels.map((channel) => (
+            <li><a href={channel.href} target={channel.href.startsWith('mailto:') ? undefined : '_blank'} rel="noopener noreferrer">{channel.label} <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+          ))}
+        </ul>
       </div>
-      <div class="container footer-legal"><span>© 2026 KAIROS</span><span>AMBATO, ECUADOR</span></div>
+      <div class="container footer-legal"><span>© 2026 KAIROS</span><span>Ambato, Ecuador</span></div>
     </footer>
 
     <script>
+      import '../scripts/liquid-hero.js'
+      import '../scripts/hero-3d.js'
+      import '../scripts/knot-3d.js'
+      import '../scripts/tilt.js'
+      import '../scripts/wave-lines.js'
+      import '../scripts/digits.js'
+      import '../scripts/contact-form.js'
+    </script>
+    <script>
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       const revealItems = document.querySelectorAll('[data-reveal]')
+      const header = document.querySelector('.site-header')
       const menuButton = document.querySelector('.menu-toggle')
       const navigation = document.querySelector('#main-navigation')
-      const haloTarget = document.querySelector('#solution-halo')
 
-      if (haloTarget && !reducedMotion && !window.matchMedia('(max-width: 700px)').matches) {
-        const loadScript = (src) => new Promise((resolve, reject) => {
-          const script = document.createElement('script')
-          script.src = src
-          script.async = true
-          script.onload = resolve
-          script.onerror = reject
-          document.head.append(script)
-        })
-        const loadHalo = async () => {
-          try {
-            await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js')
-            await loadScript('https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.halo.min.js')
-            if (!window.VANTA?.HALO || !haloTarget.isConnected) return
-            const effect = window.VANTA.HALO({
-              el: haloTarget,
-              mouseControls: true,
-              touchControls: true,
-              gyroControls: false,
-              minHeight: 420,
-              minWidth: 320,
-              backgroundColor: 0x0a0d13,
-              baseColor: 0x263e76,
-              size: 1.35,
-              amplitudeFactor: 1.15,
-              xOffset: 0.08,
-              yOffset: 0.02,
-            })
-            window.addEventListener('pagehide', () => effect.destroy(), { once: true })
-          } catch (error) {
-            console.info('La animación 3D usa su fondo estático de respaldo.', error)
-          }
-        }
-        loadHalo()
-      }
+      const syncHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 24)
+      syncHeader()
+      window.addEventListener('scroll', syncHeader, { passive: true })
 
       if (!reducedMotion && 'IntersectionObserver' in window) {
         document.documentElement.classList.add('motion-ready')
@@ -238,11 +380,36 @@ const process = [
           })
         }, { threshold: 0.12, rootMargin: '0px 0px -24px 0px' })
         revealItems.forEach((item, index) => {
-          item.style.setProperty('--reveal-delay', `${Math.min(index % 3, 2) * 85}ms`)
+          item.style.setProperty('--reveal-delay', `${Math.min(index % 3, 2) * 70}ms`)
           revealObserver.observe(item)
         })
       } else {
         revealItems.forEach((item) => item.classList.add('is-visible'))
+      }
+
+      const ferro = document.querySelector('.ferro')
+      if (ferro && 'IntersectionObserver' in window) {
+        new IntersectionObserver(([entry]) => ferro.classList.toggle('is-paused', !entry.isIntersecting)).observe(ferro)
+      }
+
+      const stage = document.querySelector('.screen-stage')
+      if (stage && !reducedMotion) {
+        const tiltOnScroll = () => {
+          const box = stage.getBoundingClientRect()
+          const progress = Math.min(Math.max((window.innerHeight - box.top) / (window.innerHeight * 0.9), 0), 1)
+          stage.style.setProperty('--sx', `${((1 - progress) * 16).toFixed(2)}deg`)
+        }
+        tiltOnScroll()
+        window.addEventListener('scroll', tiltOnScroll, { passive: true })
+      } else if (stage) {
+        stage.style.setProperty('--sx', '0deg')
+      }
+
+      const closeMenu = () => {
+        menuButton?.setAttribute('aria-expanded', 'false')
+        menuButton?.setAttribute('aria-label', 'Abrir menú')
+        navigation?.classList.remove('is-open')
+        header?.classList.remove('is-menu-open')
       }
 
       menuButton?.addEventListener('click', () => {
@@ -250,15 +417,11 @@ const process = [
         menuButton.setAttribute('aria-expanded', String(!expanded))
         menuButton.setAttribute('aria-label', expanded ? 'Abrir menú' : 'Cerrar menú')
         navigation?.classList.toggle('is-open', !expanded)
+        header?.classList.toggle('is-menu-open', !expanded)
       })
 
-      navigation?.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', () => {
-          menuButton?.setAttribute('aria-expanded', 'false')
-          menuButton?.setAttribute('aria-label', 'Abrir menú')
-          navigation.classList.remove('is-open')
-        })
-      })
+      navigation?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu))
+      window.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu() })
     </script>
   </body>
 </html>
