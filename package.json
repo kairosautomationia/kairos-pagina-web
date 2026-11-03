@@ -16,5 +16,8 @@
     "cobe": "0.6.3",
     "three": "^0.187.0",
     "threejs-components": "0.0.19"
+  },
+  "engines": {
+    "node": ">=22.23.4"
   }
 }
