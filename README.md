@@ -1,6 +1,6 @@
 # KAIROS — sitio web
 
-Sitio multipágina estático construido con React, TypeScript, Vite y React Three Fiber. La portada muestra una escena 3D ligera inspirada en el símbolo KAIROS; la página de diagnóstico conserva su flujo HTML y JavaScript.
+Sitio estático construido con Astro. La portada usa el sistema visual Calm de TypeUI, con animaciones breves y accesibles; el diagnóstico conserva su flujo HTML y JavaScript.
 
 ## Desarrollo
 
